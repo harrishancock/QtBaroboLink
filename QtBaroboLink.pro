@@ -11,10 +11,26 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = QtBaroboLink
 TEMPLATE = app
 
+INCLUDEPATH = libbarobo\
+              libbarobo/BaroboConfigFile\
+              libbarobo/BaroboConfigFile/mxml-2.7\
+              inc
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+SOURCES += src/main.cpp\
+        src/mainwindow.cpp\
+        src/robotmanager.cpp\
+        src/recordmobot.cpp\
+        src/configfile.cpp\
+        src/commshandler.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += inc/mainwindow.h\
+            inc/robotmanager.h\
+            inc/recordmobot.h\
+            inc/configfile.h
 
 FORMS    += mainwindow.ui
+
+LIBS += -Llibbarobo/build/ -lbaroboStatic\
+        -Llibbarobo/build/BaroboConfigFile -lbaroboconfigfile\
+        -Llibbarobo/build/BaroboConfigFile/mxml-2.7 -lmxml\
+        -Llibbarobo/build/libsfp -lsfpStatic

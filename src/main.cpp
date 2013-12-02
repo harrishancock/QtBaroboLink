@@ -1,5 +1,9 @@
 #include "mainwindow.h"
+#include "barobolink.h"
+#include "robotmanager.h"
 #include <QApplication>
+
+CRobotManager *g_robotManager;
 
 int main(int argc, char *argv[])
 {
