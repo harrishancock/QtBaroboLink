@@ -42,7 +42,7 @@ int ConfigFile::read(const char* path)
   return BCF_Read(_bcf, path);
 }
 
-int ConfigFile::numEntries()
+int ConfigFile::numEntries() const
 {
   return _bcf->num;
 }
@@ -67,7 +67,7 @@ int ConfigFile::moveEntryUp(int index)
   return BCF_MoveUp(_bcf, index);
 }
 
-const char* ConfigFile::getEntry(int index)
+const char* ConfigFile::getEntry(int index) const
 {
   return BCF_GetIndex(_bcf, index);
 }

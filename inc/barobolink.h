@@ -1,7 +1,7 @@
 #ifndef _BAROBOLINK_H_
 #define _BAROBOLINK_H_
-#include "robotmanager.h"
+#include "qtrobotmanager.h"
 
-extern CRobotManager *g_robotManager;
+extern QtRobotManager *g_robotManager;
 
 #endif

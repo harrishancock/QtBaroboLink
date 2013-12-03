@@ -34,7 +34,7 @@ CRobotManager::~CRobotManager()
 {
 }
 
-bool CRobotManager::isConnected(int index) 
+bool CRobotManager::isConnected(int index) const
 {
   if((index >= numEntries()) || index < 0) {
     return false;

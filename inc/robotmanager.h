@@ -40,7 +40,7 @@ class CRobotManager : public ConfigFile
     int moveEntryUp(int index);
     int moveEntryDown(int index);
     int insertEntry(const char* entry, int index);
-    bool isConnected(int index);
+    bool isConnected(int index) const;
     bool isPlaying();
     int connectIndex(int index);
     int disconnect(int index);

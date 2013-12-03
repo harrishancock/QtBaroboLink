@@ -21,12 +21,14 @@ SOURCES += src/main.cpp\
         src/robotmanager.cpp\
         src/recordmobot.cpp\
         src/configfile.cpp\
-        src/commshandler.cpp
+        src/commshandler.cpp\
+        src/qtrobotmanager.cpp
 
 HEADERS  += inc/mainwindow.h\
             inc/robotmanager.h\
             inc/recordmobot.h\
-            inc/configfile.h
+            inc/configfile.h\
+            inc/qtrobotmanager.h
 
 FORMS    += mainwindow.ui
 
@@ -34,3 +36,6 @@ LIBS += -Llibbarobo/build/ -lbaroboStatic\
         -Llibbarobo/build/BaroboConfigFile -lbaroboconfigfile\
         -Llibbarobo/build/BaroboConfigFile/mxml-2.7 -lmxml\
         -Llibbarobo/build/libsfp -lsfpStatic
+
+RESOURCES += \
+    resource.qrc
