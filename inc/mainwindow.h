@@ -17,6 +17,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    void connectSignals();
 };
 
 #endif // MAINWINDOW_H

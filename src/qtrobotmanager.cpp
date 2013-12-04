@@ -1,0 +1,100 @@
+#include "qtrobotmanager.h"
+#include <QVariant>
+#include <QDebug>
+#include <QMenu>
+#include <QCursor>
+
+QtRobotManager::QtRobotManager(QObject *parent)
+  :QAbstractTableModel(parent)
+{
+}
+
+QtRobotManager::~QtRobotManager()
+{
+}
+
+int QtRobotManager::rowCount(const QModelIndex & ) const
+{
+  return numEntries();
+  return 0;
+}
+
+int QtRobotManager::columnCount(const QModelIndex & ) const
+{
+  return 2;
+}
+
+QVariant QtRobotManager::data(const QModelIndex &index, int role) const
+{
+  if(role == Qt::DisplayRole) {
+    if(index.column() == 0) {
+      if(isConnected(index.row())) {
+        return QIcon(":/images/orb_green.png");
+      } else {
+        return QIcon(":/images/orb_red.png");
+      }
+    } else if (index.column() == 1) {
+      return QString(getEntry(index.row()));
+    }
+  }
+  if(role == Qt::DecorationRole) {
+    if(index.column() == 0) {
+      if(isConnected(index.row())) {
+        return QIcon(":/images/orb_green.png");
+      } else {
+        return QIcon(":/images/orb_red.png");
+      }
+    } 
+  }
+  if(role == Qt::ToolTipRole) {
+    if(isConnected(index.row())) {
+      return QString("Robot Connected.");
+    } else {
+      return QString("Robot Not Connected.");
+    }
+  }
+  return QVariant();
+}
+
+void QtRobotManager::displayContextMenu(const QPoint &)
+{
+  qDebug() << "bonk.\n";
+  QMenu menu;
+  QAction *connectaction = menu.addAction("Connect");
+  QAction *disconnectaction = menu.addAction("Disconnect");
+  if(isConnected(_activeIndex)) {
+    connectaction->setEnabled(false);
+  } else {
+    disconnectaction->setEnabled(false);
+  }
+  QObject::connect(connectaction, SIGNAL(triggered()), this, SLOT(connectActiveIndex()));
+  QObject::connect(disconnectaction, SIGNAL(triggered()), this, SLOT(disconnectActiveIndex()));
+  qDebug() << menu.exec(QCursor::pos());
+}
+
+void QtRobotManager::clicked(const QModelIndex &)
+{
+  qDebug() << "click.";
+}
+
+void QtRobotManager::setActiveIndex(const QModelIndex &index)
+{
+  _activeIndex = index.row();
+  qDebug() << _activeIndex << " selected as active index.";
+}
+
+void QtRobotManager::currentChanged(const QModelIndex &current, const QModelIndex &previous)
+{
+  qDebug() << "current: " << current;
+  qDebug() << "previous: " << previous;
+}
+
+void QtRobotManager::connectActiveIndex()
+{
+  qDebug() << "Connect to index " << _activeIndex;
+}
+
+void QtRobotManager::disconnectActiveIndex()
+{
+  qDebug() << "Disconnect from index " << _activeIndex;
+}

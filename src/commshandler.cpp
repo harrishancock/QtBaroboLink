@@ -98,7 +98,7 @@ void* commsThread(void* arg)
   return NULL;
 }
 
-void* listenThread(void* arg)
+void* listenThread(void*)
 {
   int sockfd, new_fd;  // listen on sock_fd, new connection on new_fd
   struct addrinfo hints, *servinfo, *p;
@@ -106,7 +106,6 @@ void* listenThread(void* arg)
   socklen_t sin_size;
   //struct sigaction sa;
   int yes=1;
-  char s[INET6_ADDRSTRLEN];
   int rv;
 
   memset(&hints, 0, sizeof hints);
@@ -250,4 +249,5 @@ int initializeComms(void)
   /* FIXME */
   //THREAD_T thread;
   //THREAD_CREATE(&thread, listenThread, NULL);
+  return 0;
 }
