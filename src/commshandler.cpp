@@ -200,7 +200,7 @@ void* listenThread(void*)
 
     /* Check to see if there are available mobots to control */
     recordMobot_t* mobot;
-    mobot = g_robotManager->getUnboundMobot();
+    mobot = robotManager()->getUnboundMobot();
     if(mobot == NULL) {
       /* No unconnected mobots found. Disconnect immediately */
 #ifdef _WIN32

@@ -92,9 +92,22 @@ void QtRobotManager::currentChanged(const QModelIndex &current, const QModelInde
 void QtRobotManager::connectActiveIndex()
 {
   qDebug() << "Connect to index " << _activeIndex;
+  connectIndex(_activeIndex);
+  emit dataChanged(createIndex(_activeIndex, 0), createIndex(_activeIndex, 1));
 }
 
 void QtRobotManager::disconnectActiveIndex()
 {
   qDebug() << "Disconnect from index " << _activeIndex;
+  CRobotManager::disconnect(_activeIndex);
+}
+
+QtRobotManager* robotManager()
+{
+  static QtRobotManager *instance = 0;
+  if(0 == instance) {
+    instance = new QtRobotManager(0);
+    instance->read( Mobot_getConfigFilePath() );
+  }
+  return instance;
 }

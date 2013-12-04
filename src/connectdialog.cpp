@@ -12,7 +12,7 @@ ConnectDialogForm::ConnectDialogForm(QWidget *parent)
   sizePolicy1.setHeightForWidth(this->sizePolicy().hasHeightForWidth());
   this->setSizePolicy(sizePolicy1);
 
-  tableView_Robots->setModel(g_robotManager);
+  tableView_Robots->setModel(robotManager());
   tableView_Robots->setColumnWidth(0, 30);
   tableView_Robots->setColumnWidth(1, 170);
   tableView_Robots->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -34,7 +34,7 @@ void ConnectDialogForm::connectSignals(void)
   /* Set up robot tableView signals */
   tableView_Robots->setContextMenuPolicy(Qt::CustomContextMenu);
   QObject::connect(tableView_Robots, SIGNAL(customContextMenuRequested(const QPoint&)),
-      g_robotManager, SLOT(displayContextMenu(const QPoint)));
+      robotManager(), SLOT(displayContextMenu(const QPoint)));
   QObject::connect(tableView_Robots, SIGNAL(pressed(const QModelIndex &)),
-      g_robotManager, SLOT(setActiveIndex(const QModelIndex)));
+      robotManager(), SLOT(setActiveIndex(const QModelIndex)));
 }

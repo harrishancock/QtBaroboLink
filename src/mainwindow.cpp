@@ -11,11 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    /*
-    ui->tableView_Robots->setModel(g_robotManager);
-    ui->tableView_Robots->setColumnWidth(0, 30);
-    ui->tableView_Robots->setColumnWidth(1, 170);
-    */
 
     ControlPanelForm *controlPanel = new ControlPanelForm(ui->tab_control);
     controlPanel->show();
@@ -34,12 +29,4 @@ MainWindow::~MainWindow()
 
 void MainWindow::connectSignals()
 {
-  /* Set up robot tableView signals */
-  /*
-  ui->tableView_Robots->setContextMenuPolicy(Qt::CustomContextMenu);
-  QObject::connect(ui->tableView_Robots, SIGNAL(customContextMenuRequested(const QPoint&)),
-      g_robotManager, SLOT(displayContextMenu(const QPoint)));
-  QObject::connect(ui->tableView_Robots, SIGNAL(pressed(const QModelIndex &)),
-      g_robotManager, SLOT(setActiveIndex(const QModelIndex)));
-      */
 }
