@@ -36,7 +36,7 @@ HEADERS  += inc/mainwindow.h\
 
 FORMS    += mainwindow.ui \
     controlpanel.ui \
-    ConnectForm.ui
+    connectpanel.ui
 
 LIBS += -Llibbarobo/build/ -lbaroboStatic\
         -Llibbarobo/build/BaroboConfigFile -lbaroboconfigfile\
