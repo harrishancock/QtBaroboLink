@@ -9,6 +9,12 @@ class ConnectDialogForm : public QWidget, private Ui::ConnectDialogForm
   public:
     explicit ConnectDialogForm(QWidget* parent = 0);
     ~ConnectDialogForm();
+
+  public slots:
+    void selectRow(const QModelIndex &index);
+
+  private:
+    void connectSignals(void);
 };
 
 #endif
