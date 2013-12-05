@@ -52,6 +52,11 @@ int ConfigFile::addEntry(const char* entry)
   return BCF_Prepend(_bcf, entry);
 }
 
+int ConfigFile::addEntry(std::string entry)
+{
+  return BCF_Prepend(_bcf, entry.c_str());
+}
+
 int ConfigFile::insertEntry(const char* entry, int index)
 {
   return BCF_Insert(_bcf, entry, index);

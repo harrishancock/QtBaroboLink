@@ -1,6 +1,8 @@
 #include "barobolink.h"
 #include "connectdialog.h"
 #include <QAbstractItemView>
+#include <QString>
+#include <QDebug>
 
 ConnectDialogForm::ConnectDialogForm(QWidget *parent)
   : QWidget(parent)
@@ -29,6 +31,14 @@ void ConnectDialogForm::selectRow(const QModelIndex &index)
   tableView_Robots->selectRow(index.row());
 }
 
+void ConnectDialogForm::addRobotFromLineEdit()
+{
+  QString robotID;
+  robotID = edit_robotID->text();
+  qDebug() << "Add robot " << robotID;
+  robotManager()->addEntry(robotID);
+}
+
 void ConnectDialogForm::connectSignals(void)
 {
   /* Set up robot tableView signals */
@@ -37,4 +47,10 @@ void ConnectDialogForm::connectSignals(void)
       robotManager(), SLOT(displayContextMenu(const QPoint)));
   QObject::connect(tableView_Robots, SIGNAL(pressed(const QModelIndex &)),
       robotManager(), SLOT(setActiveIndex(const QModelIndex)));
+
+  /* Connect the signals for adding new robots */
+  QObject::connect(edit_robotID, SIGNAL(returnPressed()),
+      this, SLOT(addRobotFromLineEdit()));
+  QObject::connect(button_addRobot, SIGNAL(clicked()),
+      this, SLOT(addRobotFromLineEdit()));
 }

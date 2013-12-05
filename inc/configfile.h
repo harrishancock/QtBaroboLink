@@ -21,6 +21,7 @@
 #define _CONFIG_FILE_H_
 
 #include <BaroboConfigFile.h>
+#include <string>
 
 class ConfigFile
 {
@@ -32,6 +33,7 @@ class ConfigFile
     const char* getEntry(int index) const;
     bool entryExists(const char* entry);
     int addEntry(const char* entry);
+    int addEntry(std::string entry);
     int insertEntry(const char* entry, int index);
     int moveEntryDown(int index);
     int moveEntryUp(int index);

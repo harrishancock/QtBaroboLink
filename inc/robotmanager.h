@@ -36,6 +36,7 @@ class CRobotManager : public ConfigFile
     CRobotManager();
     ~CRobotManager();
     int addEntry(const char* entry);
+    int addEntry(string entry);
     void moveMobot(int destIndex, int srcIndex);
     int moveEntryUp(int index);
     int moveEntryDown(int index);

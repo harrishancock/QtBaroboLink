@@ -57,6 +57,12 @@ int CRobotManager::addEntry(const char* entry)
     _mobots[i+1] = _mobots[i];
   }
   _mobots[0] = NULL;
+  return 0;
+}
+
+int CRobotManager::addEntry(string entry)
+{
+  return CRobotManager::addEntry(entry.c_str());
 }
 
 int CRobotManager::disconnectAll()

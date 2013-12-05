@@ -62,6 +62,7 @@ void QtRobotManager::displayContextMenu(const QPoint &)
   QMenu menu;
   QAction *connectaction = menu.addAction("Connect");
   QAction *disconnectaction = menu.addAction("Disconnect");
+  QAction *removeaction = menu.addAction("Remove");
   if(isConnected(_activeIndex)) {
     connectaction->setEnabled(false);
   } else {
@@ -69,6 +70,7 @@ void QtRobotManager::displayContextMenu(const QPoint &)
   }
   QObject::connect(connectaction, SIGNAL(triggered()), this, SLOT(connectActiveIndex()));
   QObject::connect(disconnectaction, SIGNAL(triggered()), this, SLOT(disconnectActiveIndex()));
+  QObject::connect(removeaction, SIGNAL(triggered()), this, SLOT(removeActiveIndex()));
   qDebug() << menu.exec(QCursor::pos());
 }
 
@@ -100,6 +102,15 @@ void QtRobotManager::removeActiveIndex()
 {
   disconnectActiveIndex();
   ConfigFile::remove(_activeIndex);
+  ConfigFile::write();
+  emit dataChanged(createIndex(_activeIndex, 0), createIndex(_activeIndex, 1));
+}
+
+void QtRobotManager::addEntry(QString entry)
+{
+  ConfigFile::addEntry(entry.toStdString());
+  ConfigFile::write();
+  emit dataChanged(createIndex(_activeIndex, 0), createIndex(_activeIndex, 1));
 }
 
 QtRobotManager* robotManager()

@@ -12,6 +12,7 @@ class ConnectDialogForm : public QWidget, private Ui::ConnectDialogForm
 
   public slots:
     void selectRow(const QModelIndex &index);
+    void addRobotFromLineEdit();
 
   private:
     void connectSignals(void);
