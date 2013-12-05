@@ -83,12 +83,6 @@ void QtRobotManager::setActiveIndex(const QModelIndex &index)
   qDebug() << _activeIndex << " selected as active index.";
 }
 
-void QtRobotManager::currentChanged(const QModelIndex &current, const QModelIndex &previous)
-{
-  qDebug() << "current: " << current;
-  qDebug() << "previous: " << previous;
-}
-
 void QtRobotManager::connectActiveIndex()
 {
   qDebug() << "Connect to index " << _activeIndex;
@@ -100,6 +94,12 @@ void QtRobotManager::disconnectActiveIndex()
 {
   qDebug() << "Disconnect from index " << _activeIndex;
   CRobotManager::disconnect(_activeIndex);
+}
+
+void QtRobotManager::removeActiveIndex()
+{
+  disconnectActiveIndex();
+  ConfigFile::remove(_activeIndex);
 }
 
 QtRobotManager* robotManager()

@@ -2,5 +2,10 @@
     <qresource prefix="/images">
         <file>orb_green.png</file>
         <file>orb_red.png</file>
+        <file>DOF_joint_diagram.png</file>
+        <file>move_back.png</file>
+        <file>move_forward.png</file>
+        <file>rotate_left.png</file>
+        <file>rotate_right.png</file>
     </qresource>
 </RCC>
