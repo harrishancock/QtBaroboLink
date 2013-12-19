@@ -25,7 +25,7 @@ SOURCES += src/main.cpp\
         src/qtrobotmanager.cpp\
         src/controlpanel.cpp\
         src/connectdialog.cpp\
-        src/asyncmobot.cpp
+        src/asyncrobot.cpp
 
 HEADERS  += inc/mainwindow.h\
             inc/robotmanager.h\
@@ -34,7 +34,7 @@ HEADERS  += inc/mainwindow.h\
             inc/qtrobotmanager.h\
             inc/controlpanel.h\
             inc/connectdialog.h\
-            inc/asyncmobot.h
+            inc/asyncrobot.h
 
 FORMS    += mainwindow.ui \
     controlpanel.ui \

@@ -5,12 +5,12 @@
 #include <QMutex>
 #include <linkbot.h>
 
-class AsyncMobot:public QObject
+class AsyncRobot:public QObject
 {
   Q_OBJECT
   public:
-    AsyncMobot();
-    ~AsyncMobot();
+    AsyncRobot();
+    ~AsyncRobot();
     void bindMobot(CLinkbot* mobot);
     void enableJointSignals(bool enable);
     void enableAccelSignals(bool enable);

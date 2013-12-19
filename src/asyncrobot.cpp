@@ -1,36 +1,36 @@
-#include "asyncmobot.h"
+#include "asyncrobot.h"
 #include <QThread>
 
-AsyncMobot::AsyncMobot() 
+AsyncRobot::AsyncRobot() 
 {
   jointSignalEnable_ = false;
   accelSignalEnable_ = false;
 }
 
-AsyncMobot::~AsyncMobot() {}
+AsyncRobot::~AsyncRobot() {}
 
-void AsyncMobot::bindMobot(CLinkbot* mobot)
+void AsyncRobot::bindMobot(CLinkbot* mobot)
 {
   mobotLock_.lock();
   mobot_ = mobot;
   mobotLock_.unlock();
 }
 
-void AsyncMobot::enableJointSignals(bool enable)
+void AsyncRobot::enableJointSignals(bool enable)
 {
   mobotLock_.lock();
   jointSignalEnable_ = enable;
   mobotLock_.unlock();
 }
 
-void AsyncMobot::enableAccelSignals(bool enable)
+void AsyncRobot::enableAccelSignals(bool enable)
 {
   mobotLock_.lock();
   accelSignalEnable_ = enable;
   mobotLock_.unlock();
 }
 
-void AsyncMobot::driveJointTo(int joint, double angle)
+void AsyncRobot::driveJointTo(int joint, double angle)
 {
   desiredJointAnglesLock_.lock();
   desiredJointAngles_[joint-1] = angle;
@@ -38,7 +38,7 @@ void AsyncMobot::driveJointTo(int joint, double angle)
   desiredJointAnglesLock_.unlock();
 }
 
-void AsyncMobot::doWork()
+void AsyncRobot::doWork()
 {
   double jointAngles[3];
   double accel[3];

@@ -3,7 +3,7 @@
 
 #include <QModelIndex>
 #include "ui_controlpanel.h"
-#include "asyncmobot.h"
+#include "asyncrobot.h"
 
 class ControlPanelForm : public QWidget, private Ui::ControlPanelForm
 {
@@ -18,7 +18,7 @@ class ControlPanelForm : public QWidget, private Ui::ControlPanelForm
     void driveJoint2To(int);
 
   private:
-    AsyncMobot *asyncmobot_;
+    AsyncRobot *asyncrobot_;
     QThread *mobotthread_;
 };
 

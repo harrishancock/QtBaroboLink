@@ -3,7 +3,7 @@
 #include <QThread>
 #include <QModelIndex>
 #include <math.h>
-#include "asyncmobot.h"
+#include "asyncrobot.h"
 #include "recordmobot.h"
 #include "qtrobotmanager.h"
 
@@ -11,9 +11,9 @@ ControlPanelForm::ControlPanelForm(QWidget *parent)
   : QWidget(parent)
 {
   setupUi(this);
-  asyncmobot_ = new AsyncMobot();
+  asyncrobot_ = new AsyncRobot();
   mobotthread_ = new QThread();
-  asyncmobot_->moveToThread(mobotthread_);
+  asyncrobot_->moveToThread(mobotthread_);
   mobotthread_->start();
 
   QObject::connect(this->dial_j1, SIGNAL(valueChanged(int)),
@@ -25,11 +25,11 @@ ControlPanelForm::ControlPanelForm(QWidget *parent)
 #define DEG2RAD(x) ((x)*M_PI/180.0)
 void ControlPanelForm::driveJoint1To(int angle)
 {
-  asyncmobot_->driveJointTo(1, DEG2RAD(angle));
+  asyncrobot_->driveJointTo(1, DEG2RAD(angle));
 }
 void ControlPanelForm::driveJoint2To(int angle)
 {
-  asyncmobot_->driveJointTo(1, DEG2RAD(angle));
+  asyncrobot_->driveJointTo(1, DEG2RAD(angle));
 }
 #undef DEG2RAD
 
@@ -39,9 +39,9 @@ void ControlPanelForm::setActiveRobot(int index)
   RecordMobot *mobot;
   mobot = robotManager()->getMobotIndex(index);
   if(mobot != NULL) {
-    asyncmobot_->bindMobot(mobot);
-    asyncmobot_->enableJointSignals(true);
-    QMetaObject::invokeMethod(asyncmobot_, "doWork", Qt::QueuedConnection);
+    asyncrobot_->bindMobot(mobot);
+    asyncrobot_->enableJointSignals(true);
+    QMetaObject::invokeMethod(asyncrobot_, "doWork", Qt::QueuedConnection);
   }
 }
 
