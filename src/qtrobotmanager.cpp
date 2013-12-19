@@ -16,7 +16,6 @@ QtRobotManager::~QtRobotManager()
 int QtRobotManager::rowCount(const QModelIndex & ) const
 {
   return numEntries();
-  return 0;
 }
 
 int QtRobotManager::columnCount(const QModelIndex & ) const
@@ -103,14 +102,14 @@ void QtRobotManager::removeActiveIndex()
   disconnectActiveIndex();
   ConfigFile::remove(_activeIndex);
   ConfigFile::write();
-  emit dataChanged(createIndex(_activeIndex, 0), createIndex(_activeIndex, 1));
+  emit layoutChanged();
 }
 
 void QtRobotManager::addEntry(QString entry)
 {
   ConfigFile::addEntry(entry.toStdString());
   ConfigFile::write();
-  emit dataChanged(createIndex(_activeIndex, 0), createIndex(_activeIndex, 1));
+  emit layoutChanged();
 }
 
 QtRobotManager* robotManager()
