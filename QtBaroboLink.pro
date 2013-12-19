@@ -40,7 +40,7 @@ FORMS    += mainwindow.ui \
     controlpanel.ui \
     connectpanel.ui
 
-LIBS += -Llibbarobo/build/ -lbaroboStatic\
+LIBS += -Llibbarobo/build/ -lbaroboStatic -lbluetooth\
         -Llibbarobo/build/BaroboConfigFile -lbaroboconfigfile\
         -Llibbarobo/build/BaroboConfigFile/mxml-2.7 -lmxml\
         -Llibbarobo/build/libsfp -lsfpStatic
