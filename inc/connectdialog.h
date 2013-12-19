@@ -1,9 +1,9 @@
-#ifndef _CONNECTDIALOG_H_
-#define _CONNECTDIALOG_H_
+#ifndef CONNECTDIALOG_H_
+#define CONNECTDIALOG_H_
 
 #include "ui_connectpanel.h"
 
-class ConnectDialogForm : public QWidget, private Ui::ConnectDialogForm
+class ConnectDialogForm : public QWidget, public Ui::ConnectDialogForm
 {
   Q_OBJECT
   public:

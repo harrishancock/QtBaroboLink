@@ -199,7 +199,7 @@ void* listenThread(void*)
     */
 
     /* Check to see if there are available mobots to control */
-    recordMobot_t* mobot;
+    RecordMobot* mobot;
     mobot = robotManager()->getUnboundMobot();
     if(mobot == NULL) {
       /* No unconnected mobots found. Disconnect immediately */
@@ -210,7 +210,7 @@ void* listenThread(void*)
 #endif
       continue;
     }
-    mobot->bound = true;
+    mobot->setBound(true);
 
 #if 0
     if (!fork()) { // this is the child process

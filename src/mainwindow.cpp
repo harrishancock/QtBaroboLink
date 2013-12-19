@@ -12,12 +12,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ControlPanelForm *controlPanel = new ControlPanelForm(ui->tab_control);
-    controlPanel->show();
+    controlPanel_ = new ControlPanelForm(ui->tab_control);
+    controlPanel_->show();
 
-    ConnectDialogForm *connectDialog = new ConnectDialogForm();
-    ui->layout_connectArea->addWidget(connectDialog);
-    connectDialog->show();
+    connectDialog_ = new ConnectDialogForm();
+    ui->layout_connectArea->addWidget(connectDialog_);
+    connectDialog_->show();
 
     connectSignals();
 }
@@ -29,4 +29,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::connectSignals()
 {
+  //QObject::connect(connectDialog_->tableView_Robots, SIGNAL(pressed(const QModelIndex &)),
+      //controlPanel_, SLOT(setActiveRobot(const QModelIndex)));
+  //QObject::connect(connectDialog_, SIGNAL(pressed(const QModelIndex &)),
+      //robotManager(), SLOT(setActiveIndex(const QModelIndex)));
 }

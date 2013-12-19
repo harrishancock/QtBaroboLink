@@ -1,9 +1,9 @@
-#ifndef _ASYNCMOBOT_H_
-#define _ASYNCMOBOT_H_
+#ifndef ASYNCMOBOT_H_
+#define ASYNCMOBOT_H_
 
 #include <QObject>
 #include <QMutex>
-#include <mobot.h>
+#include <linkbot.h>
 
 class AsyncMobot:public QObject
 {
@@ -11,31 +11,29 @@ class AsyncMobot:public QObject
   public:
     AsyncMobot();
     ~AsyncMobot();
-    void bindMobot(mobot_t* mobot);
+    void bindMobot(CLinkbot* mobot);
     void enableJointSignals(bool enable);
     void enableAccelSignals(bool enable);
 
   public slots:
     void driveJointTo(int joint, double angle);
-
-  signals:
-    void jointAnglesChanged(double angle1, double angle2, double angle3, double angle4);
-    void accelChanged(double x, double y, double z);
-
-  protected:
     void doWork(); // Worker thread
 
-  private:
-    mobot_t* _mobot;
-    bool _jointSignalEnable;
-    bool _accelSignalEnable;
-    QMutex _mobotLock; // Protects 3 above members
+  signals:
+    void jointAnglesChanged(double angle1, double angle2, double angle3);
+    void accelChanged(double x, double y, double z);
 
-    double _lastJointAngles[4];
-    double _lastAccel[3];
-    double _desiredJointAngles[4];
-    unsigned int _anglesDirtyMask;
-    QMutex _desiredJointAnglesLock;
+  private:
+    CLinkbot* mobot_;
+    bool jointSignalEnable_;
+    bool accelSignalEnable_;
+    QMutex mobotLock_; // Protects 3 above members
+
+    double lastJointAngles_[3];
+    double lastAccel_[3];
+    double desiredJointAngles_[3];
+    unsigned int anglesDirtyMask_;
+    QMutex desiredJointAnglesLock_;
 };
 
 #endif

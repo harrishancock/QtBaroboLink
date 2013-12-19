@@ -19,6 +19,7 @@
 
 #pragma once
 #include <mobot.h>
+#include <linkbot.h>
 
 enum motionType_e
 {
@@ -73,6 +74,49 @@ typedef enum recordMobotConnectStatus_e
   RMOBOT_CONNECTING,
   RMOBOT_CONNECTED
 } recordMobotConnectStatus_t;
+
+class RecordMobot : public CLinkbot
+{
+  public:
+    RecordMobot();
+    ~RecordMobot();
+    void init(const char* name);
+    int connectWithAddress( const char address[], int channel);
+    const char* getAddress();
+    int record();
+    int addDelay( double seconds);
+    inline int formFactor() {int form; getFormFactor(form); return form;}
+    int isMoving();
+    int play( int index);
+    int getMotionType( int index);
+    int getChMotionString( int index, char* buf);
+    int getChMotionStringB( int index, char* buf);
+    int getPythonMotionString( int index, char* buf);
+    int getPythonMotionStringB( int index, char* buf);
+    const char* getMotionName( int index);
+    inline int numMotions() {return _numMotions;}
+    inline void setBound(bool bound) {_bound = bound;}
+    int setMotionName( int index, const char* name);
+    int removeMotion( int index, bool releaseData);
+    int clearAllMotions();
+    int moveMotion( int fromindex, int toindex);
+    int swapMotion( int index1, int index2);
+    void setName( const char* name);
+    recordMobotConnectStatus_t connectStatus();
+    inline bool isBound() {return _bound;}
+
+  private:
+    int _numMotions;
+    struct motion_s **_motions;
+    int _numMotionsAllocated;
+    char _name[80];
+    char _address[80];
+    bool _bound; /* Is the mobot bound via external TCP socket? */
+    int _firmwareVersion;
+    recordMobotConnectStatus_t _connectStatus;
+    int _dirty;
+    int _rgb[3];
+};
 
 typedef struct recordMobot_s
 {

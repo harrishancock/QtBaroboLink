@@ -24,7 +24,8 @@ SOURCES += src/main.cpp\
         src/commshandler.cpp\
         src/qtrobotmanager.cpp\
         src/controlpanel.cpp\
-        src/connectdialog.cpp
+        src/connectdialog.cpp\
+        src/asyncmobot.cpp
 
 HEADERS  += inc/mainwindow.h\
             inc/robotmanager.h\
@@ -32,7 +33,8 @@ HEADERS  += inc/mainwindow.h\
             inc/configfile.h\
             inc/qtrobotmanager.h\
             inc/controlpanel.h\
-            inc/connectdialog.h
+            inc/connectdialog.h\
+            inc/asyncmobot.h
 
 FORMS    += mainwindow.ui \
     controlpanel.ui \

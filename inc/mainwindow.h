@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "controlpanel.h"
+#include "connectdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +19,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    ControlPanelForm *controlPanel_;
+    ConnectDialogForm *connectDialog_;
     void connectSignals();
 };
 

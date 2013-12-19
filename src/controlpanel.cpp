@@ -1,40 +1,51 @@
 #include "controlpanel.h"
 #include <QDebug>
-
-ControlThread::ControlThread(QObject *parent):QThread(parent)
-{
-}
-
-void ControlThread::run()
-{
-}
-
-void ControlThread::setActiveRobot(int index)
-{
-}
-
-void ControlThread::driveJoint1To(int degrees)
-{
-  qDebug() << "Drive joint 1 to " << degrees;
-}
-
-void ControlThread::driveJoint2To(int degrees)
-{
-  qDebug() << "Drive joint 2 to " << degrees;
-}
+#include <QThread>
+#include <QModelIndex>
+#include <math.h>
+#include "asyncmobot.h"
+#include "recordmobot.h"
+#include "qtrobotmanager.h"
 
 ControlPanelForm::ControlPanelForm(QWidget *parent)
   : QWidget(parent)
 {
   setupUi(this);
-  _workerThread = new ControlThread();
+  asyncmobot_ = new AsyncMobot();
+  mobotthread_ = new QThread();
+  asyncmobot_->moveToThread(mobotthread_);
+  mobotthread_->start();
 
   QObject::connect(this->dial_j1, SIGNAL(valueChanged(int)),
-      _workerThread, SLOT(driveJoint1To(int)));    
+      this, SLOT(driveJoint1To(int)));    
   QObject::connect(this->dial_j2, SIGNAL(valueChanged(int)),
-      _workerThread, SLOT(driveJoint2To(int)));    
+      this, SLOT(driveJoint2To(int)));    
 }
-    
+ 
+#define DEG2RAD(x) ((x)*M_PI/180.0)
+void ControlPanelForm::driveJoint1To(int angle)
+{
+  asyncmobot_->driveJointTo(1, DEG2RAD(angle));
+}
+void ControlPanelForm::driveJoint2To(int angle)
+{
+  asyncmobot_->driveJointTo(1, DEG2RAD(angle));
+}
+#undef DEG2RAD
 
-void ControlPanelForm::setActiveRobot(int index){
+void ControlPanelForm::setActiveRobot(int index)
+{
+  /* Get the mobot object */
+  RecordMobot *mobot;
+  mobot = robotManager()->getMobotIndex(index);
+  if(mobot != NULL) {
+    asyncmobot_->bindMobot(mobot);
+    asyncmobot_->enableJointSignals(true);
+    QMetaObject::invokeMethod(asyncmobot_, "doWork", Qt::QueuedConnection);
+  }
+}
+
+void ControlPanelForm::setActiveRobot(const QModelIndex &index)
+{
+  setActiveRobot(index.row());
 }

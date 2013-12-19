@@ -46,7 +46,7 @@ class CRobotManager : public ConfigFile
     int connectIndex(int index);
     int disconnect(int index);
     int disconnectAll();
-    recordMobot_t* getUnboundMobot();
+    RecordMobot* getUnboundMobot();
     int numConnected();
     int numAvailable();
     void record();
@@ -54,16 +54,16 @@ class CRobotManager : public ConfigFile
     void restoreSavedMobot(int index);
     void addDelay(double seconds);
     void play();
-    recordMobot_t* getMobot(int connectIndex);
-    recordMobot_t* getMobotIndex(int index);
+    RecordMobot* getMobot(int connectIndex);
+    RecordMobot* getMobotIndex(int index);
     string* generateChProgram(bool looped = false, bool holdOnExit = false);
     string* generateCppProgram(bool looped = false, bool holdOnExit = false);
     string* generatePythonProgram(bool looped = false, bool holdOnExit = false);
     bool _isPlaying;
     int _newDndIndex;
   private:
-    recordMobot_t *_mobots[MAX_CONNECTED];
-    recordMobot_t *_tmpMobot;
+    RecordMobot *_mobots[MAX_CONNECTED];
+    RecordMobot *_tmpMobot;
     /* _connectAddresses is an array of pointers to 
        ConfigFile::_addresses */
 };

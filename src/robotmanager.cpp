@@ -42,13 +42,13 @@ bool CRobotManager::isConnected(int index) const
   if(_mobots[index] == NULL) {
     return false;
   }
-  return Mobot_isConnected((mobot_t*)_mobots[index]);
+  return _mobots[index]->isConnected();
 }
 
 int CRobotManager::addEntry(const char* entry)
 {
   int rc;
-  if(rc = ConfigFile::addEntry(entry)) {
+  if((rc = ConfigFile::addEntry(entry)) != 0) {
     return rc;
   }
 
@@ -83,11 +83,11 @@ void CRobotManager::moveMobot(int destIndex, int srcIndex)
 int CRobotManager::moveEntryUp(int index)
 {
   int rc;
-  if(rc = ConfigFile::moveEntryUp(index)) {
+  if((rc = ConfigFile::moveEntryUp(index)) != 0) {
     return rc;
   }
   /* Just swap the data of this entry with the one above it */
-  recordMobot_t* tmp;
+  RecordMobot* tmp;
   tmp = _mobots[index-1];
   _mobots[index-1] = _mobots[index];
   _mobots[index] = tmp;
@@ -97,11 +97,11 @@ int CRobotManager::moveEntryUp(int index)
 int CRobotManager::moveEntryDown(int index)
 {
   int rc;
-  if(rc = ConfigFile::moveEntryDown(index)) {
+  if((rc = ConfigFile::moveEntryDown(index)) != 0) {
     return rc;
   }
   /* Swap with entry below */
-  recordMobot_t *tmp;
+  RecordMobot *tmp;
   tmp = _mobots[index+1];
   _mobots[index+1] = _mobots[index];
   _mobots[index] = tmp;
@@ -111,7 +111,7 @@ int CRobotManager::moveEntryDown(int index)
 int CRobotManager::insertEntry(const char* entry, int index)
 {
   int rc;
-  if(rc = ConfigFile::insertEntry(entry, index)) {
+  if((rc = ConfigFile::insertEntry(entry, index)) != 0) {
     return rc;
   }
   /* Move the existing mobot array */
@@ -137,11 +137,11 @@ int CRobotManager::connectIndex(int index)
   sprintf(name, "mobot%d", numConnected()+1);
   int err;
   if(_mobots[index] == NULL) {
-    _mobots[index] = RecordMobot_new();
+    _mobots[index] = new RecordMobot();
   }
-  RecordMobot_init(_mobots[index], name);
+  _mobots[index]->init(name);;
   printf("(barobo) INFO: connecting %s at address %s\n", name, getEntry(index));
-  err = RecordMobot_connectWithAddress( _mobots[index], getEntry(index), 1 );
+  err = _mobots[index]->connectWithAddress(getEntry(index), 1 );
   return err;
 }
 
@@ -161,16 +161,16 @@ int CRobotManager::disconnect(int index)
   return 0;
 }
 
-recordMobot_t* CRobotManager::getUnboundMobot()
+RecordMobot* CRobotManager::getUnboundMobot()
 {
   int i;
-  recordMobot_t* mobot;
+  RecordMobot* mobot;
   mobot = NULL;
   for(i = 0; i < numEntries(); i++) {
     if(_mobots[i] == NULL) {
       continue;
     }
-    if(_mobots[i]->bound == false) {
+    if(_mobots[i]->isBound() == false) {
       mobot = _mobots[i];
       break;
     }
@@ -200,17 +200,17 @@ int CRobotManager::numAvailable()
 void CRobotManager::record()
 {
   int i;
-  recordMobot_t* mobot;
+  RecordMobot* mobot;
   for(i = 0; i < numConnected(); i++) {
     mobot = getMobot(i);
-    RecordMobot_record(mobot);
+    mobot->record();
   }
 }
 
 int CRobotManager::remove(int index)
 {
   int rc;
-  if(rc = ConfigFile::remove(index)) {
+  if((rc = ConfigFile::remove(index)) != 0) {
     return rc;
   }
   /* Adjust the list of mobots */
@@ -234,33 +234,33 @@ void CRobotManager::restoreSavedMobot(int index)
 void CRobotManager::addDelay(double seconds)
 {
   int i;
-  recordMobot_t* mobot;
+  RecordMobot* mobot;
   for(i = 0; i < numConnected(); i++) {
     mobot = getMobot(i);
-    RecordMobot_addDelay(mobot, seconds);
+    mobot->addDelay(seconds);
   }
 }
 
 void* robotManagerPlayThread(void* arg)
 {
   CRobotManager *rm = (CRobotManager*)arg;
-  recordMobot_t* mobot;
+  RecordMobot* mobot;
   if(rm->numConnected() <= 0) {
     rm->_isPlaying = false;
     return NULL;
   }
   int index, i;
   /* Go through each motion */
-  for(index = 0; index < rm->getMobot(0)->numMotions; index++) {
+  for(index = 0; index < rm->getMobot(0)->numMotions(); index++) {
     /* Go through each mobot */
     for(i = 0; i < rm->numConnected(); i++) {
       mobot = rm->getMobot(i);
-      if(RecordMobot_getMotionType(mobot, index) == MOTION_SLEEP) {
+      if(mobot->getMotionType(index) == MOTION_SLEEP) {
         /* Sleep the correct amount of time and break */
-        RecordMobot_play(mobot, index);
+        mobot->play(index);
         break;
-      } else if (RecordMobot_getMotionType(mobot, index) == MOTION_POS) {
-        RecordMobot_play(mobot, index);
+      } else if (mobot->getMotionType(index) == MOTION_POS) {
+        mobot->play(index);
       } else {
         fprintf(stderr, "MEMORY ERROR %s:%d\n", __FILE__, __LINE__);
         rm->_isPlaying = false;
@@ -269,6 +269,7 @@ void* robotManagerPlayThread(void* arg)
     }
   }
   rm->_isPlaying = false;
+  return NULL;
 }
 
 void CRobotManager::play()
@@ -279,7 +280,7 @@ void CRobotManager::play()
   //THREAD_CREATE(&thread, robotManagerPlayThread, this);
 }
 
-recordMobot_t* CRobotManager::getMobot(int connectIndex)
+RecordMobot* CRobotManager::getMobot(int connectIndex)
 {
 	if(connectIndex < 0 || connectIndex >= numConnected()) {
 		return NULL;
@@ -287,7 +288,7 @@ recordMobot_t* CRobotManager::getMobot(int connectIndex)
   int i;
   for(i = 0; i <= MAX_CONNECTED ; i++ ) {
     if(_mobots[i] == NULL) {continue;}
-    if((_mobots[i] != NULL) && (_mobots[i]->connectStatus == RMOBOT_CONNECTED)) {
+    if((_mobots[i] != NULL) && (_mobots[i]->connectStatus() == RMOBOT_CONNECTED)) {
       connectIndex--;
     }
     if(connectIndex < 0) {
@@ -297,7 +298,7 @@ recordMobot_t* CRobotManager::getMobot(int connectIndex)
 	return _mobots[i];
 }
 
-recordMobot_t* CRobotManager::getMobotIndex(int index)
+RecordMobot* CRobotManager::getMobotIndex(int index)
 {
   return _mobots[index];
 }
@@ -313,8 +314,8 @@ string* CRobotManager::generateChProgram(bool looped, bool holdOnExit)
 
   for(i = 0; i < numConnected(); i++) {
     if(
-        (getMobot(i)->mobot.formFactor == MOBOTFORM_I) ||
-        (getMobot(i)->mobot.formFactor == MOBOTFORM_L) 
+        (getMobot(i)->formFactor() == MOBOTFORM_I) ||
+        (getMobot(i)->formFactor() == MOBOTFORM_L) 
       ) 
     {
       *program += "#include <linkbot.h>\n\n";
@@ -324,8 +325,8 @@ string* CRobotManager::generateChProgram(bool looped, bool holdOnExit)
 
   for(i = 0; i < numConnected(); i++) {
     if(
-        (getMobot(i)->mobot.formFactor != MOBOTFORM_I) &&
-        (getMobot(i)->mobot.formFactor != MOBOTFORM_L) 
+        (getMobot(i)->formFactor() != MOBOTFORM_I) &&
+        (getMobot(i)->formFactor() != MOBOTFORM_L) 
       ) 
     {
       *program += "#include <mobot.h>\n\n";
@@ -337,9 +338,9 @@ string* CRobotManager::generateChProgram(bool looped, bool holdOnExit)
 
   /* Declare the appropiate number of CMobot variables */
   for(i = 0; i < numConnected(); i++) {
-    if(getMobot(i)->mobot.formFactor == MOBOTFORM_I) {
+    if(getMobot(i)->formFactor() == MOBOTFORM_I) {
       sprintf(tbuf, "CLinkbotI robot%d;\n", i+1);
-    } else if (getMobot(i)->mobot.formFactor == MOBOTFORM_L) {
+    } else if (getMobot(i)->formFactor() == MOBOTFORM_L) {
       sprintf(tbuf, "CLinkbotL robot%d;\n", i+1);
     } else {
       sprintf(tbuf, "CMobot robot%d;\n", i+1);
@@ -368,13 +369,13 @@ string* CRobotManager::generateChProgram(bool looped, bool holdOnExit)
     /* Set all of the robot names so they are in order */
     for(j = 0; j < numConnected(); j++) {
       sprintf(tmp, "robot%d", j+1);
-      RecordMobot_setName(getMobot(j), tmp);
+      getMobot(j)->setName(tmp);
     }
     /* Now go through each motion */
-    for(i = 0; i < getMobot(0)->numMotions; i++) {
+    for(i = 0; i < getMobot(0)->numMotions(); i++) {
       *program += "\n";
       /* First, print the comment for the motion */
-      sprintf(tbuf, "/* %s */\n", RecordMobot_getMotionName(getMobot(0), i));
+      sprintf(tbuf, "/* %s */\n", getMobot(0)->getMotionName(i));
       buf.assign(tbuf);
       //*program += "    ";
       if(looped) *program += "    ";
@@ -382,21 +383,21 @@ string* CRobotManager::generateChProgram(bool looped, bool holdOnExit)
       /* Now, print each robots motion */
       for(j = 0; j < numConnected(); j++) {
         if(numConnected() == 1) {
-          RecordMobot_getChMotionStringB(getMobot(j), i, tbuf);
+          getMobot(j)->getChMotionStringB(i, tbuf);
         } else {
-          RecordMobot_getChMotionString(getMobot(j), i, tbuf);
+          getMobot(j)->getChMotionString(i, tbuf);
         }
         buf.assign(tbuf);
         buf += "\n";
         if(looped) *program += "    ";
         *program += buf;
-        if(RecordMobot_getMotionType(getMobot(j), i) == MOTION_SLEEP) {
+        if(getMobot(j)->getMotionType(i) == MOTION_SLEEP) {
           break;
         }
       }
       /* Make sure all the robots are done moving */
       for(j = 0; j < numConnected(); j++) {
-        if(RecordMobot_getMotionType(getMobot(j), i) == MOTION_SLEEP) {
+        if(getMobot(j)->getMotionType(i) == MOTION_SLEEP) {
           break;
         }
         if(numConnected() > 1) {
@@ -437,8 +438,8 @@ string* CRobotManager::generateCppProgram(bool looped, bool holdOnExit)
 
   for(i = 0; i < numConnected(); i++) {
     if(
-        (getMobot(i)->mobot.formFactor == MOBOTFORM_I) ||
-        (getMobot(i)->mobot.formFactor == MOBOTFORM_L) 
+        (getMobot(i)->formFactor() == MOBOTFORM_I) ||
+        (getMobot(i)->formFactor() == MOBOTFORM_L) 
       ) 
     {
       *program += "#include <linkbot.h>\n\n";
@@ -448,8 +449,8 @@ string* CRobotManager::generateCppProgram(bool looped, bool holdOnExit)
 
   for(i = 0; i < numConnected(); i++) {
     if(
-        (getMobot(i)->mobot.formFactor != MOBOTFORM_I) &&
-        (getMobot(i)->mobot.formFactor != MOBOTFORM_L) 
+        (getMobot(i)->formFactor() != MOBOTFORM_I) &&
+        (getMobot(i)->formFactor() != MOBOTFORM_L) 
       ) 
     {
       *program += "#include <mobot.h>\n\n";
@@ -461,9 +462,9 @@ string* CRobotManager::generateCppProgram(bool looped, bool holdOnExit)
 
   /* Declare the appropiate number of CMobot variables */
   for(i = 0; i < numConnected(); i++) {
-    if(getMobot(i)->mobot.formFactor == MOBOTFORM_I) {
+    if(getMobot(i)->formFactor() == MOBOTFORM_I) {
       sprintf(tbuf, "    CLinkbotI robot%d;\n", i+1);
-    } else if (getMobot(i)->mobot.formFactor == MOBOTFORM_L) {
+    } else if (getMobot(i)->formFactor() == MOBOTFORM_L) {
       sprintf(tbuf, "    CLinkbotL robot%d;\n", i+1);
     } else {
       sprintf(tbuf, "    CMobot robot%d;\n", i+1);
@@ -492,13 +493,13 @@ string* CRobotManager::generateCppProgram(bool looped, bool holdOnExit)
     /* Set all of the robot names so they are in order */
     for(j = 0; j < numConnected(); j++) {
       sprintf(tmp, "    robot%d", j+1);
-      RecordMobot_setName(getMobot(j), tmp);
+      getMobot(j)->setName(tmp);
     }
     /* Now go through each motion */
-    for(i = 0; i < getMobot(0)->numMotions; i++) {
+    for(i = 0; i < getMobot(0)->numMotions(); i++) {
       *program += "\n";
       /* First, print the comment for the motion */
-      sprintf(tbuf, "/* %s */\n", RecordMobot_getMotionName(getMobot(0), i));
+      sprintf(tbuf, "/* %s */\n", getMobot(0)->getMotionName(i));
       buf.assign(tbuf);
       *program += "    ";
       if(looped) *program += "    ";
@@ -506,21 +507,21 @@ string* CRobotManager::generateCppProgram(bool looped, bool holdOnExit)
       /* Now, print each robots motion */
       for(j = 0; j < numConnected(); j++) {
         if(numConnected() == 1) {
-          RecordMobot_getChMotionStringB(getMobot(j), i, tbuf);
+          getMobot(j)->getChMotionStringB(i, tbuf);
         } else {
-          RecordMobot_getChMotionString(getMobot(j), i, tbuf);
+          getMobot(j)->getChMotionString(i, tbuf);
         }
         buf.assign(tbuf);
         buf += "\n";
         if(looped) *program += "    ";
         *program += buf;
-        if(RecordMobot_getMotionType(getMobot(j), i) == MOTION_SLEEP) {
+        if(getMobot(j)->getMotionType(i) == MOTION_SLEEP) {
           break;
         }
       }
       /* Make sure all the robots are done moving */
       for(j = 0; j < numConnected(); j++) {
-        if(RecordMobot_getMotionType(getMobot(j), i) == MOTION_SLEEP) {
+        if(getMobot(j)->getMotionType(i) == MOTION_SLEEP) {
           break;
         }
         if(numConnected() > 1) {
@@ -566,9 +567,9 @@ string* CRobotManager::generatePythonProgram(bool looped, bool holdOnExit)
 
   /* Declare the appropiate number of CMobot variables */
   for(i = 0; i < numConnected(); i++) {
-    if(getMobot(i)->mobot.formFactor == MOBOTFORM_I) {
+    if(getMobot(i)->formFactor() == MOBOTFORM_I) {
       sprintf(tbuf, "robot%d = Linkbot()\n", i+1);
-    } else if (getMobot(i)->mobot.formFactor == MOBOTFORM_L) {
+    } else if (getMobot(i)->formFactor() == MOBOTFORM_L) {
       sprintf(tbuf, "robot%d = Linkbot()\n", i+1);
     } else {
       sprintf(tbuf, "robot%d = Mobot();\n", i+1);
@@ -596,13 +597,13 @@ string* CRobotManager::generatePythonProgram(bool looped, bool holdOnExit)
     /* Set all of the robot names so they are in order */
     for(j = 0; j < numConnected(); j++) {
       sprintf(tmp, "robot%d", j+1);
-      RecordMobot_setName(getMobot(j), tmp);
+      getMobot(j)->setName(tmp);
     }
     /* Now go through each motion */
-    for(i = 0; i < getMobot(0)->numMotions; i++) {
+    for(i = 0; i < getMobot(0)->numMotions(); i++) {
       *program += "\n";
       /* First, print the comment for the motion */
-      sprintf(tbuf, "# %s \n", RecordMobot_getMotionName(getMobot(0), i));
+      sprintf(tbuf, "# %s \n", getMobot(0)->getMotionName(i));
       buf.assign(tbuf);
       //*program += "    ";
       if(looped) *program += "    ";
@@ -610,21 +611,21 @@ string* CRobotManager::generatePythonProgram(bool looped, bool holdOnExit)
       /* Now, print each robots motion */
       for(j = 0; j < numConnected(); j++) {
         if(numConnected() == 1) {
-          RecordMobot_getPythonMotionStringB(getMobot(j), i, tbuf);
+          getMobot(j)->getPythonMotionStringB(i, tbuf);
         } else {
-          RecordMobot_getPythonMotionString(getMobot(j), i, tbuf);
+          getMobot(j)->getPythonMotionString(i, tbuf);
         }
         buf.assign(tbuf);
         buf += "\n";
         if(looped) *program += "    ";
         *program += buf;
-        if(RecordMobot_getMotionType(getMobot(j), i) == MOTION_SLEEP) {
+        if(getMobot(j)->getMotionType(i) == MOTION_SLEEP) {
           break;
         }
       }
       /* Make sure all the robots are done moving */
       for(j = 0; j < numConnected(); j++) {
-        if(RecordMobot_getMotionType(getMobot(j), i) == MOTION_SLEEP) {
+        if(getMobot(j)->getMotionType(i) == MOTION_SLEEP) {
           break;
         }
         if(numConnected() > 1) {

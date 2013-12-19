@@ -3,80 +3,79 @@
 
 AsyncMobot::AsyncMobot() 
 {
-  _jointSignalEnable = false;
-  _accelSignalEnable = false;
+  jointSignalEnable_ = false;
+  accelSignalEnable_ = false;
 }
 
 AsyncMobot::~AsyncMobot() {}
 
-void AsyncMobot::bindMobot(mobot_t* mobot)
+void AsyncMobot::bindMobot(CLinkbot* mobot)
 {
-  _mobotLock.lock();
-  _mobot = mobot;
-  _mobotLock.unlock();
+  mobotLock_.lock();
+  mobot_ = mobot;
+  mobotLock_.unlock();
 }
 
 void AsyncMobot::enableJointSignals(bool enable)
 {
-  _mobotLock.lock();
-  _jointSignalEnable = enable;
-  _mobotLock.unlock();
+  mobotLock_.lock();
+  jointSignalEnable_ = enable;
+  mobotLock_.unlock();
 }
 
 void AsyncMobot::enableAccelSignals(bool enable)
 {
-  _mobotLock.lock();
-  _accelSignalEnable = enable;
-  _mobotLock.unlock();
+  mobotLock_.lock();
+  accelSignalEnable_ = enable;
+  mobotLock_.unlock();
 }
 
 void AsyncMobot::driveJointTo(int joint, double angle)
 {
-  _desiredJointAnglesLock.lock();
-  _desiredJointAngles[joint-1] = angle;
-  _anglesDirtyMask |= 1<<(joint-1);
-  _desiredJointAnglesLock.unlock();
+  desiredJointAnglesLock_.lock();
+  desiredJointAngles_[joint-1] = angle;
+  anglesDirtyMask_ |= 1<<(joint-1);
+  desiredJointAnglesLock_.unlock();
 }
 
 void AsyncMobot::doWork()
 {
-  double jointAngles[4];
+  double jointAngles[3];
   double accel[3];
   while(1) {
-    _mobotLock.lock();
-    if(_mobot == NULL) {
+    mobotLock_.lock();
+    if(mobot_ == NULL) {
+      mobotLock_.unlock();
       break;
     }
-    if(_jointSignalEnable) {
-      Mobot_getJointAngles(
-          _mobot, 
-          &jointAngles[0], 
-          &jointAngles[1], 
-          &jointAngles[2], 
-          &jointAngles[3]);
-      if(memcmp(jointAngles, _lastJointAngles, sizeof(double)*4)) {
-        emit jointAnglesChanged(jointAngles[0], jointAngles[1], jointAngles[2], jointAngles[3]);
-        memcpy(_lastJointAngles, jointAngles, sizeof(double)*4);
+    if(jointSignalEnable_) {
+      mobot_->getJointAngles( 
+          jointAngles[0], 
+          jointAngles[1], 
+          jointAngles[2]);
+      if(memcmp(jointAngles, lastJointAngles_, sizeof(double)*3)) {
+        emit jointAnglesChanged(jointAngles[0], jointAngles[1], jointAngles[2]);
+        memcpy(lastJointAngles_, jointAngles, sizeof(double)*4);
       }
     }
-    if(_accelSignalEnable) {
-      Mobot_getAccelerometerData(_mobot, &accel[0], &accel[1], &accel[2]);
-      if(memcmp(accel, _lastAccel, sizeof(double)*3)) {
+    if(accelSignalEnable_) {
+      mobot_->getAccelerometerData(accel[0], accel[1], accel[2]);
+      if(memcmp(accel, lastAccel_, sizeof(double)*3)) {
         emit accelChanged(accel[0], accel[1], accel[2]);
-        memcpy(_lastAccel, accel, sizeof(double)*3);
+        memcpy(lastAccel_, accel, sizeof(double)*3);
       }
     }
 
-    _desiredJointAnglesLock.lock();
+    desiredJointAnglesLock_.lock();
     int i;
     for(i = 0; i < 4; i++) {
-      if(_anglesDirtyMask & (1<<i)) {
-        Mobot_driveJointToDirectNB(_mobot, (robotJointId_t)(i+1), _desiredJointAngles[i]);
+      if(anglesDirtyMask_ & (1<<i)) {
+        mobot_->driveJointToDirectNB( (robotJointId_t)(i+1), desiredJointAngles_[i]);
       }
     }
-    _desiredJointAnglesLock.unlock();
+    desiredJointAnglesLock_.unlock();
 
-    _mobotLock.unlock();
+    mobotLock_.unlock();
     QThread::yieldCurrentThread();
   }
 }
