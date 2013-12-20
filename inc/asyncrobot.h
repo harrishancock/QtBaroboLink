@@ -20,6 +20,8 @@ class AsyncRobot:public QObject
     void enableAccelSignals(bool enable = true);
     void disableJointSignals();
     void disableAccelSignals();
+    void acquireJointControl();
+    void releaseJointControl();
 
   signals:
     void jointAnglesChanged(double angle1, double angle2, double angle3);
@@ -40,6 +42,7 @@ class AsyncRobot:public QObject
     double desiredJointAngles_[3];
     unsigned int anglesDirtyMask_;
     QMutex desiredJointAnglesLock_;
+    bool jointControl_;
 };
 
 #endif
