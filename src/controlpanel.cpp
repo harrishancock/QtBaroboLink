@@ -13,8 +13,6 @@ ControlPanelForm::ControlPanelForm(QWidget *parent)
   setupUi(this);
   asyncrobot_ = new AsyncRobot();
   mobotthread_ = new QThread();
-  asyncrobot_->moveToThread(mobotthread_);
-  mobotthread_->start();
 
   QObject::connect(this->dial_j1, SIGNAL(valueChanged(int)),
       this, SLOT(driveJoint1To(int)));    
@@ -27,6 +25,9 @@ ControlPanelForm::ControlPanelForm(QWidget *parent)
 
   QObject::connect(asyncrobot_, SIGNAL(joint1Changed(int)),
       this->dial_j1, SLOT(setValue(int)));
+
+  asyncrobot_->moveToThread(mobotthread_);
+  mobotthread_->start();
 }
  
 void ControlPanelForm::driveJoint1To(int angle)

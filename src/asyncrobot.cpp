@@ -1,6 +1,7 @@
 #include "asyncrobot.h"
 #include <QThread>
 #include <QDebug>
+#include <QCoreApplication>
 
 AsyncRobot::AsyncRobot() 
 {
@@ -34,7 +35,7 @@ void AsyncRobot::enableAccelSignals(bool enable)
 
 void AsyncRobot::disableJointSignals()
 {
-  qDebug() << "Moop!";
+  qDebug() << "Joint Signals Disabled.";
   enableJointSignals(false);
 }
 
@@ -100,6 +101,7 @@ void AsyncRobot::doWork()
     desiredJointAnglesLock_.unlock();
 
     mobotLock_.unlock();
+    QCoreApplication::processEvents();
     QThread::yieldCurrentThread();
   }
 }
