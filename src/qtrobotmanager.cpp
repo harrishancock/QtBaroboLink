@@ -81,7 +81,7 @@ void QtRobotManager::clicked(const QModelIndex &)
 void QtRobotManager::setActiveIndex(const QModelIndex &index)
 {
   _activeIndex = index.row();
-  qDebug() << _activeIndex << " selected as active index.";
+  qDebug() << _activeIndex << " selected as active index in QtRobotManager.";
 }
 
 void QtRobotManager::connectActiveIndex()

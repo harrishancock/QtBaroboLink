@@ -12,15 +12,21 @@ class AsyncRobot:public QObject
     AsyncRobot();
     ~AsyncRobot();
     void bindMobot(CLinkbot* mobot);
-    void enableJointSignals(bool enable);
-    void enableAccelSignals(bool enable);
 
   public slots:
     void driveJointTo(int joint, double angle);
     void doWork(); // Worker thread
+    void enableJointSignals(bool enable = true);
+    void enableAccelSignals(bool enable = true);
+    void disableJointSignals();
+    void disableAccelSignals();
 
   signals:
     void jointAnglesChanged(double angle1, double angle2, double angle3);
+    void joint1Changed(double angle);
+    void joint2Changed(double angle);
+    void joint1Changed(int angle);
+    void joint2Changed(int angle);
     void accelChanged(double x, double y, double z);
 
   private:
