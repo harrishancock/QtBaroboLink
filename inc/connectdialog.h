@@ -2,6 +2,8 @@
 #define CONNECTDIALOG_H_
 
 #include "ui_connectpanel.h"
+#include "scandialog.h"
+
 
 class ConnectDialogForm : public QWidget, public Ui::ConnectDialogForm
 {
@@ -9,14 +11,19 @@ class ConnectDialogForm : public QWidget, public Ui::ConnectDialogForm
   public:
     explicit ConnectDialogForm(QWidget* parent = 0);
     ~ConnectDialogForm();
+    static void scanCallbackWrapper(const char* serialID);
+    void scanCallback(const char* serialID);
 
   public slots:
     void selectRow(const QModelIndex &index);
     void addRobotFromLineEdit();
+    void scanRobots();
 
   private:
     void connectSignals(void);
+    ScanDialog *scanDialog_;
 };
 
+extern class ConnectDialogForm * g_ConnectDialogForm;
 #endif
 

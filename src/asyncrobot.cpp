@@ -87,6 +87,8 @@ void AsyncRobot::doWork()
           emit joint1Changed(((int)-jointAngles[0])%360);
         }
         if(jointAngles[1] != lastJointAngles_[1]) {
+          /* Negative angles because the directionality of the Qt dials is
+           * opposite of our joint directions. */
           emit joint2Changed(((int)-jointAngles[1])%360);
         }
         if(jointAngles[2] != lastJointAngles_[2]) {
@@ -114,6 +116,9 @@ void AsyncRobot::doWork()
     desiredJointAnglesLock_.unlock();
 
     mobotLock_.unlock();
+    /* Need an explicit call to processEvents() because our doWork() loop
+     * rarely returns. Thus, we should process events inside the doWork() loop.
+     * */
     QCoreApplication::processEvents();
     QThread::yieldCurrentThread();
   }

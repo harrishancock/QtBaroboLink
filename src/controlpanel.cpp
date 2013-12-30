@@ -47,6 +47,8 @@ ControlPanelForm::ControlPanelForm(QWidget *parent)
  
 void ControlPanelForm::driveJoint1To(int angle)
 {
+  /* Negative angles because the directionality of the Qt dials is opposite of
+   * our joint directions. */
   asyncrobot_->driveJointTo(1, -angle);
 }
 void ControlPanelForm::driveJoint2To(int angle)

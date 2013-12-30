@@ -4,6 +4,8 @@
 #include <QString>
 #include <QDebug>
 
+class ConnectDialogForm * g_ConnectDialogForm = 0;
+
 ConnectDialogForm::ConnectDialogForm(QWidget *parent)
   : QWidget(parent)
 {
@@ -19,10 +21,23 @@ ConnectDialogForm::ConnectDialogForm(QWidget *parent)
   tableView_Robots->setColumnWidth(1, 170);
   tableView_Robots->setSelectionBehavior(QAbstractItemView::SelectRows);
 
+  scanDialog_ = new ScanDialog();
+
   connectSignals();
 }
 
 ConnectDialogForm::~ConnectDialogForm()
+{
+}
+
+void ConnectDialogForm::scanCallbackWrapper(const char* serialID)
+{
+  if(NULL != g_ConnectDialogForm) {
+    g_ConnectDialogForm->scanCallback(serialID);
+  }
+}
+
+void ConnectDialogForm::scanCallback(const char* serialID)
 {
 }
 
@@ -39,6 +54,11 @@ void ConnectDialogForm::addRobotFromLineEdit()
   robotManager()->addEntry(robotID);
 }
 
+void ConnectDialogForm::scanRobots()
+{
+  scanDialog_->show();
+}
+
 void ConnectDialogForm::connectSignals(void)
 {
   /* Set up robot tableView signals */
@@ -53,4 +73,6 @@ void ConnectDialogForm::connectSignals(void)
       this, SLOT(addRobotFromLineEdit()));
   QObject::connect(button_addRobot, SIGNAL(clicked()),
       this, SLOT(addRobotFromLineEdit()));
+  QObject::connect(button_scan, SIGNAL(clicked()),
+      this, SLOT(scanRobots()));
 }
