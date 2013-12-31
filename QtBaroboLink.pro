@@ -26,7 +26,8 @@ SOURCES += src/main.cpp\
         src/controlpanel.cpp\
         src/connectdialog.cpp\
         src/asyncrobot.cpp\
-        src/scandialog.cpp
+        src/scandialog.cpp\
+        src/scanlist.cpp
 
 HEADERS  += inc/mainwindow.h\
             inc/robotmanager.h\
@@ -36,7 +37,8 @@ HEADERS  += inc/mainwindow.h\
             inc/controlpanel.h\
             inc/connectdialog.h\
             inc/asyncrobot.h\
-            inc/scandialog.h
+            inc/scandialog.h\
+            inc/scanlist.h
 
 FORMS    += mainwindow.ui \
     controlpanel.ui \

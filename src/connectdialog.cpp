@@ -3,6 +3,8 @@
 #include <QAbstractItemView>
 #include <QString>
 #include <QDebug>
+#include <QMessageBox>
+#include <mobot.h>
 
 class ConnectDialogForm * g_ConnectDialogForm = 0;
 
@@ -22,6 +24,10 @@ ConnectDialogForm::ConnectDialogForm(QWidget *parent)
   tableView_Robots->setSelectionBehavior(QAbstractItemView::SelectRows);
 
   scanDialog_ = new ScanDialog();
+  scanList_ = new BLORB(0);
+  // DEBUG scanDialog_->scannedListView->setModel(scanList_);
+
+  g_ConnectDialogForm = this;
 
   connectSignals();
 }
@@ -32,6 +38,7 @@ ConnectDialogForm::~ConnectDialogForm()
 
 void ConnectDialogForm::scanCallbackWrapper(const char* serialID)
 {
+  qDebug() << "Received scan info from: " << serialID;
   if(NULL != g_ConnectDialogForm) {
     g_ConnectDialogForm->scanCallback(serialID);
   }
@@ -39,6 +46,8 @@ void ConnectDialogForm::scanCallbackWrapper(const char* serialID)
 
 void ConnectDialogForm::scanCallback(const char* serialID)
 {
+  /* Add the new entry into the scanlist */
+  scanList_->newRobot(QString(serialID));
 }
 
 void ConnectDialogForm::selectRow(const QModelIndex &index)
@@ -56,6 +65,25 @@ void ConnectDialogForm::addRobotFromLineEdit()
 
 void ConnectDialogForm::scanRobots()
 {
+  static mobot_t* dongle = NULL;
+  if(NULL == dongle) {
+    dongle = Mobot_getDongle();
+    if(NULL == dongle) {
+      Mobot_initDongle();
+      dongle = Mobot_getDongle();
+      if(NULL == dongle) {
+        QMessageBox msgBox;
+        msgBox.setText(
+            "ERROR: No Linkbot dongle detected. Please attach a Linkbot or "
+            "Linkbot Dongle to the computer and try again.");
+        msgBox.exec();
+        return;
+      }
+    }
+  }
+  Mobot_registerScanCallback(dongle, scanCallbackWrapper);
+  Mobot_queryAddresses(dongle);
+  //scanList_->clearAll();
   scanDialog_->show();
 }
 

@@ -3,7 +3,7 @@
 
 #include "ui_connectpanel.h"
 #include "scandialog.h"
-
+#include "scanlist.h"
 
 class ConnectDialogForm : public QWidget, public Ui::ConnectDialogForm
 {
@@ -22,6 +22,7 @@ class ConnectDialogForm : public QWidget, public Ui::ConnectDialogForm
   private:
     void connectSignals(void);
     ScanDialog *scanDialog_;
+    BLORB *scanList_;
 };
 
 extern class ConnectDialogForm * g_ConnectDialogForm;

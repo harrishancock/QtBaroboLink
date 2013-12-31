@@ -92,7 +92,7 @@ int ConfigFile::remove(int index)
   return BCF_Remove(_bcf, index);
 }
 
-int ConfigFile::rename(const char* newName, int index)
+int ConfigFile::rename(const char* /*newName*/, int /*index*/)
 {
   return 0;
 }
