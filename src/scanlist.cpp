@@ -4,12 +4,10 @@
 ScanList::ScanList(QObject *parent) 
   :QAbstractTableModel(parent)
 {
-  qDebug() << "Fuck this goddam shit.";
 }
 
 ScanList::~ScanList()
 {
-  qDebug() << "Again: wtf?";
 }
 
 int ScanList::rowCount(const QModelIndex & ) const
@@ -42,10 +40,11 @@ void ScanList::newRobot(const QString & serialID)
   qSort(scannedIds_);
   //emit dataChanged(createIndex(0, 0), createIndex(scannedIds_.size(), 0));
   emit layoutChanged();
+  //emit bloob();
 }
 
 void ScanList::clearAll(void)
 {
   scannedIds_.clear();
-  emit layoutChanged();
+  //emit layoutChanged();
 }

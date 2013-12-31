@@ -25,7 +25,7 @@ ConnectDialogForm::ConnectDialogForm(QWidget *parent)
 
   scanDialog_ = new ScanDialog();
   scanList_ = new ScanList(0);
-  // DEBUG scanDialog_->scannedListView->setModel(scanList_);
+  scanDialog_->scannedListView->setModel(scanList_);
 
   g_ConnectDialogForm = this;
 
@@ -84,7 +84,7 @@ void ConnectDialogForm::scanRobots()
   Mobot_registerScanCallback(dongle, scanCallbackWrapper);
   Mobot_queryAddresses(dongle);
   //scanList_->clearAll();
-  scanDialog_->show();
+  scanDialog_->exec();
 }
 
 void ConnectDialogForm::connectSignals(void)
