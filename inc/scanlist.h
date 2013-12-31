@@ -3,12 +3,12 @@
 
 #include <QAbstractTableModel>
 
-class BLORB : public QAbstractTableModel 
+class ScanList : public QAbstractTableModel 
 {
   Q_OBJECT
   public:
-    BLORB(QObject* parent);
-    ~BLORB();
+    ScanList(QObject* parent);
+    ~ScanList();
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;

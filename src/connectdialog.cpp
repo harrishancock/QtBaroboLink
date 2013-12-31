@@ -24,7 +24,7 @@ ConnectDialogForm::ConnectDialogForm(QWidget *parent)
   tableView_Robots->setSelectionBehavior(QAbstractItemView::SelectRows);
 
   scanDialog_ = new ScanDialog();
-  scanList_ = new BLORB(0);
+  scanList_ = new ScanList(0);
   // DEBUG scanDialog_->scannedListView->setModel(scanList_);
 
   g_ConnectDialogForm = this;

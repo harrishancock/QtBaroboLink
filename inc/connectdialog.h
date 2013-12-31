@@ -22,7 +22,7 @@ class ConnectDialogForm : public QWidget, public Ui::ConnectDialogForm
   private:
     void connectSignals(void);
     ScanDialog *scanDialog_;
-    BLORB *scanList_;
+    ScanList *scanList_;
 };
 
 extern class ConnectDialogForm * g_ConnectDialogForm;

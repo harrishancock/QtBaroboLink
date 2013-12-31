@@ -1,28 +1,28 @@
 #include "scanlist.h"
 #include <QDebug>
 
-BLORB::BLORB(QObject *parent) 
+ScanList::ScanList(QObject *parent) 
   :QAbstractTableModel(parent)
 {
   qDebug() << "Fuck this goddam shit.";
 }
 
-BLORB::~BLORB()
+ScanList::~ScanList()
 {
   qDebug() << "Again: wtf?";
 }
 
-int BLORB::rowCount(const QModelIndex & ) const
+int ScanList::rowCount(const QModelIndex & ) const
 {
   return scannedIds_.size();
 }
 
-int BLORB::columnCount(const QModelIndex &) const
+int ScanList::columnCount(const QModelIndex &) const
 {
   return 1;
 }
 
-QVariant BLORB::data(const QModelIndex & index, int role) const
+QVariant ScanList::data(const QModelIndex & index, int role) const
 {
   qDebug() << "data";
   switch(role) {
@@ -34,7 +34,7 @@ QVariant BLORB::data(const QModelIndex & index, int role) const
   }
 }
 
-void BLORB::newRobot(const QString & serialID)
+void ScanList::newRobot(const QString & serialID)
 {
   qDebug() << "Adding new robot: " << serialID;
   emit layoutAboutToBeChanged();
@@ -44,7 +44,7 @@ void BLORB::newRobot(const QString & serialID)
   emit layoutChanged();
 }
 
-void BLORB::clearAll(void)
+void ScanList::clearAll(void)
 {
   scannedIds_.clear();
   emit layoutChanged();
