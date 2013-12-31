@@ -27,7 +27,8 @@ SOURCES += src/main.cpp\
         src/connectdialog.cpp\
         src/asyncrobot.cpp\
         src/scandialog.cpp\
-        src/scanlist.cpp
+        src/scanlist.cpp\
+        src/scanwidget.cpp
 
 HEADERS  += inc/mainwindow.h\
             inc/robotmanager.h\
@@ -38,12 +39,14 @@ HEADERS  += inc/mainwindow.h\
             inc/connectdialog.h\
             inc/asyncrobot.h\
             inc/scandialog.h\
-            inc/scanlist.h
+            inc/scanlist.h\
+            inc/scanwidget.h
 
 FORMS    += mainwindow.ui \
     controlpanel.ui \
     connectpanel.ui \
-    scandialog.ui
+    scandialog.ui \
+    scanwidget.ui
 
 LIBS += -Llibbarobo/build/ -lbaroboStatic -lbluetooth\
         -Llibbarobo/build/BaroboConfigFile -lbaroboconfigfile\

@@ -22,7 +22,6 @@ int ScanList::columnCount(const QModelIndex &) const
 
 QVariant ScanList::data(const QModelIndex & index, int role) const
 {
-  qDebug() << "data";
   switch(role) {
     case Qt::DisplayRole:
       return scannedIds_[index.row()];
@@ -34,7 +33,6 @@ QVariant ScanList::data(const QModelIndex & index, int role) const
 
 void ScanList::newRobot(const QString & serialID)
 {
-  qDebug() << "Adding new robot: " << serialID;
   emit layoutAboutToBeChanged();
   scannedIds_.prepend(QString(serialID));
   qSort(scannedIds_);

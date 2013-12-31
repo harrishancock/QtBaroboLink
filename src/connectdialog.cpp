@@ -25,6 +25,8 @@ ConnectDialogForm::ConnectDialogForm(QWidget *parent)
 
   scanDialog_ = new ScanDialog();
   scanList_ = new ScanList(0);
+  qRegisterMetaType< QList<QPersistentModelIndex> > ("QList<QPersistentModelIndex>");
+  qRegisterMetaType< QAbstractItemModel::LayoutChangeHint > ("QAbstractItemModel::LayoutChangeHint");
   scanDialog_->scannedListView->setModel(scanList_);
 
   g_ConnectDialogForm = this;
@@ -38,7 +40,6 @@ ConnectDialogForm::~ConnectDialogForm()
 
 void ConnectDialogForm::scanCallbackWrapper(const char* serialID)
 {
-  qDebug() << "Received scan info from: " << serialID;
   if(NULL != g_ConnectDialogForm) {
     g_ConnectDialogForm->scanCallback(serialID);
   }
@@ -81,10 +82,10 @@ void ConnectDialogForm::scanRobots()
       }
     }
   }
+  scanList_->clearAll();
+  scanDialog_->show();
   Mobot_registerScanCallback(dongle, scanCallbackWrapper);
   Mobot_queryAddresses(dongle);
-  //scanList_->clearAll();
-  scanDialog_->exec();
 }
 
 void ConnectDialogForm::connectSignals(void)
