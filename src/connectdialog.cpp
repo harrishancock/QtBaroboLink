@@ -104,4 +104,6 @@ void ConnectDialogForm::connectSignals(void)
       this, SLOT(addRobotFromLineEdit()));
   QObject::connect(button_scan, SIGNAL(clicked()),
       this, SLOT(scanRobots()));
+  QObject::connect(scanDialog_->button_refresh, SIGNAL(clicked()),
+      this, SLOT(scanRobots()));
 }
