@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 CONFIG += qt debug
 
@@ -30,7 +30,8 @@ SOURCES += src/main.cpp\
         src/asyncrobot.cpp\
         src/scandialog.cpp\
         src/scanlist.cpp\
-        src/scanwidget.cpp
+        src/scanwidget.cpp\
+        src/tcpcomms.cpp
 
 HEADERS  += inc/mainwindow.h\
             inc/robotmanager.h\
@@ -42,7 +43,8 @@ HEADERS  += inc/mainwindow.h\
             inc/asyncrobot.h\
             inc/scandialog.h\
             inc/scanlist.h\
-            inc/scanwidget.h
+            inc/scanwidget.h\
+            inc/tcpcomms.h
 
 FORMS    += mainwindow.ui \
     controlpanel.ui \

@@ -12,12 +12,18 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    /* Set up control panel */
     controlPanel_ = new ControlPanelForm(ui->tab_control);
     controlPanel_->show();
 
+    /* Set up connect panel */
     connectDialog_ = new ConnectDialogForm();
     ui->layout_connectArea->addWidget(connectDialog_);
     connectDialog_->show();
+
+    /* Start comms forwarding */
+    comms_ = new CommsForwarding();
+    comms_->start();
 
     connectSignals();
 }
