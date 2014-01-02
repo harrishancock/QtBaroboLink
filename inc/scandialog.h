@@ -9,6 +9,9 @@ class ScanDialog : public QDialog, public Ui::scanRobotsDialog
   Q_OBJECT
   public:
     explicit ScanDialog(QWidget* parent = 0, Qt::WindowFlags f = 0);
+
+  public slots:
+    void addSelectedRobots(void);
 };
 
 #endif

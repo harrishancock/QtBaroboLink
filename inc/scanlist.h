@@ -17,9 +17,6 @@ class ScanList : public QAbstractTableModel
     void newRobot(const QString & serialID);
     void clearAll(void);
 
-  signals:
-    void bloob();
-
   private:
     QList<QString> scannedIds_;
 };
