@@ -17,7 +17,7 @@ void ScanDialog::addSelectedRobots(void)
   QModelIndexList selected;
   selected = selectModel->selectedIndexes();
   QAbstractItemModel *model = scannedListView->model();
-  for(int i = 0; i < selected.size(); i++) {
+  for(int i = selected.size()-1; i >= 0; i--) {
     robotManager()->addEntry(model->data(selected.at(i)).toString());
   }
 }

@@ -18,6 +18,10 @@ class ConnectDialogForm : public QWidget, public Ui::ConnectDialogForm
     void selectRow(const QModelIndex &index);
     void addRobotFromLineEdit();
     void scanRobots();
+    void displayContextMenu(const QPoint &p);
+    void connectIndices();
+    void disconnectIndices();
+    void removeIndices();
 
   private:
     void connectSignals(void);

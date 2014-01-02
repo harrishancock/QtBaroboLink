@@ -57,7 +57,6 @@ QVariant QtRobotManager::data(const QModelIndex &index, int role) const
 
 void QtRobotManager::displayContextMenu(const QPoint &)
 {
-  qDebug() << "bonk.\n";
   QMenu menu;
   QAction *connectaction = menu.addAction("Connect");
   QAction *disconnectaction = menu.addAction("Disconnect");
@@ -70,7 +69,7 @@ void QtRobotManager::displayContextMenu(const QPoint &)
   QObject::connect(connectaction, SIGNAL(triggered()), this, SLOT(connectActiveIndex()));
   QObject::connect(disconnectaction, SIGNAL(triggered()), this, SLOT(disconnectActiveIndex()));
   QObject::connect(removeaction, SIGNAL(triggered()), this, SLOT(removeActiveIndex()));
-  qDebug() << menu.exec(QCursor::pos());
+  menu.exec(QCursor::pos());
 }
 
 void QtRobotManager::clicked(const QModelIndex &)
@@ -82,6 +81,11 @@ void QtRobotManager::setActiveIndex(const QModelIndex &index)
 {
   _activeIndex = index.row();
   qDebug() << _activeIndex << " selected as active index in QtRobotManager.";
+}
+
+int QtRobotManager::disconnectIndex(int index)
+{
+  return CRobotManager::disconnect(index);
 }
 
 void QtRobotManager::connectActiveIndex()

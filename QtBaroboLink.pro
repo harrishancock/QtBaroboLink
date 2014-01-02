@@ -6,6 +6,8 @@
 
 QT       += core gui
 
+CONFIG += qt debug
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = QtBaroboLink

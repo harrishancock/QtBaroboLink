@@ -1,10 +1,12 @@
+#include <QAbstractItemView>
+#include <QDebug>
+#include <QMenu>
+#include <QMessageBox>
+#include <QString>
+#include <mobot.h>
 #include "barobolink.h"
 #include "connectdialog.h"
-#include <QAbstractItemView>
-#include <QString>
-#include <QDebug>
-#include <QMessageBox>
-#include <mobot.h>
+#include "qtrobotmanager.h"
 
 class ConnectDialogForm * g_ConnectDialogForm = 0;
 
@@ -88,12 +90,54 @@ void ConnectDialogForm::scanRobots()
   Mobot_queryAddresses(dongle);
 }
 
+void ConnectDialogForm::displayContextMenu(const QPoint &/*p*/)
+{
+  QMenu menu;
+  QAction *connectaction = menu.addAction("Connect");
+  QAction *disconnectaction = menu.addAction("Disconnect");
+  QAction *removeaction = menu.addAction("Remove");
+  if(robotManager()->isConnected(robotManager()->activeIndex())) {
+    connectaction->setEnabled(false);
+  } else {
+    disconnectaction->setEnabled(false);
+  }
+  QObject::connect(connectaction, SIGNAL(triggered()), this, SLOT(connectIndices()));
+  QObject::connect(disconnectaction, SIGNAL(triggered()), this, SLOT(disconnectIndices()));
+  QObject::connect(removeaction, SIGNAL(triggered()), this, SLOT(removeIndices()));
+  menu.exec(QCursor::pos());
+}
+
+void ConnectDialogForm::connectIndices()
+{
+  QModelIndexList selected = tableView_Robots->selectionModel()->selectedIndexes();
+  for(int i = 0; i < selected.size(); i++) {
+    robotManager()->connectIndex(selected.at(i).row());
+  }
+}
+
+void ConnectDialogForm::disconnectIndices()
+{
+  QModelIndexList selected = tableView_Robots->selectionModel()->selectedIndexes();
+  for(int i = 0; i < selected.size(); i++) {
+    robotManager()->disconnectIndex(selected.at(i).row());
+  }
+}
+
+void ConnectDialogForm::removeIndices()
+{
+  QModelIndexList selected = tableView_Robots->selectionModel()->selectedRows();
+  for(int i = selected.size()-1; i >= 0; i--) {
+    robotManager()->remove(selected.at(i).row());
+    robotManager()->write();
+  }
+}
+
 void ConnectDialogForm::connectSignals(void)
 {
   /* Set up robot tableView signals */
   tableView_Robots->setContextMenuPolicy(Qt::CustomContextMenu);
   QObject::connect(tableView_Robots, SIGNAL(customContextMenuRequested(const QPoint&)),
-      robotManager(), SLOT(displayContextMenu(const QPoint)));
+      this, SLOT(displayContextMenu(const QPoint)));
   QObject::connect(tableView_Robots, SIGNAL(pressed(const QModelIndex &)),
       robotManager(), SLOT(setActiveIndex(const QModelIndex)));
 
