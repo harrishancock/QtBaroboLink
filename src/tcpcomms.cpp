@@ -14,6 +14,7 @@ void CommsRobotClient::init(QTcpSocket *socket, RecordMobot* robot)
   sock_ = socket;
   robot_ = robot;
   QObject::connect(socket, SIGNAL(readyRead()), this, SLOT(bytesFromClientReady()));
+  QObject::connect(socket, SIGNAL(disconnected()), this, SLOT(disconnect()));
 }
 
 void CommsRobotClient::bytesFromClientReady()
@@ -34,6 +35,11 @@ void CommsRobotClient::bytesFromClientReady()
     rc = sock_->write((const char*)&bytebuf[2], bytebuf[3]);
     buf = buf.right(buf.size() - buf.at(1));
   }
+}
+
+void CommsRobotClient::disconnect()
+{
+  robot_->setBound(false);
 }
 
 CommsForwarding::CommsForwarding(QObject *parent) : QObject(parent)

@@ -16,6 +16,7 @@ class CommsRobotClient : public QObject
 
   public slots:
     void bytesFromClientReady();
+    void disconnect();
 
   private:
     QTcpSocket *sock_;

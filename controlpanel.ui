@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>408</width>
-    <height>453</height>
+    <width>392</width>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,54 +22,163 @@
   <property name="linkbot_diagram" stdset="0">
    <pixmap/>
   </property>
-  <widget class="QFrame" name="frame">
-   <property name="geometry">
-    <rect>
-     <x>9</x>
-     <y>9</y>
-     <width>173</width>
-     <height>179</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="resource.qrc">:/images/DOF_joint_diagram.png</pixmap>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>200</x>
-     <y>10</y>
-     <width>194</width>
-     <height>160</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Joint Control</string>
-   </property>
-   <property name="flat">
-    <bool>false</bool>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QGridLayout" name="gridLayout_5">
+   <item row="0" column="0">
+    <widget class="QCheckBox" name="checkBox_enable">
+     <property name="text">
+      <string>Enable Control Panel</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="resource.qrc">:/images/DOF_joint_diagram.png</pixmap>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Joint Control</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="button_j1Forward">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QPushButton" name="button_j1Forward">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resource.qrc">
+            <normaloff>:/images/move_forward.png</normaloff>:/images/move_forward.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_j1Stop">
+          <property name="text">
+           <string>zero</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_j1Backward">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resource.qrc">
+            <normaloff>:/images/move_back.png</normaloff>:/images/move_back.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Joint 1</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QPushButton" name="button_j2Forward">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resource.qrc">
+            <normaloff>:/images/move_forward.png</normaloff>:/images/move_forward.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_j2Stop">
+          <property name="text">
+           <string>zero</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_j2Backward">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resource.qrc">
+            <normaloff>:/images/move_back.png</normaloff>:/images/move_back.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_j2">
+          <property name="text">
+           <string>Joint 2</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Drive Control</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="1">
+       <widget class="QPushButton" name="button_driveForward">
         <property name="text">
          <string/>
         </property>
@@ -79,21 +188,31 @@
         </property>
         <property name="iconSize">
          <size>
-          <width>24</width>
-          <height>24</height>
+          <width>32</width>
+          <height>32</height>
          </size>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QPushButton" name="button_j1Stop">
+      <item row="1" column="0">
+       <widget class="QPushButton" name="button_driveLeft">
         <property name="text">
-         <string>zero</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/images/rotate_left.png</normaloff>:/images/rotate_left.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QPushButton" name="button_j1Backward">
+      <item row="1" column="1">
+       <widget class="QPushButton" name="button_driveBackward">
         <property name="text">
          <string/>
         </property>
@@ -103,14 +222,82 @@
         </property>
         <property name="iconSize">
          <size>
-          <width>24</width>
-          <height>24</height>
+          <width>32</width>
+          <height>32</height>
          </size>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QLabel" name="label_2">
+      <item row="1" column="2">
+       <widget class="QPushButton" name="button_driveRight">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/images/rotate_right.png</normaloff>:/images/rotate_right.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="3">
+       <widget class="QPushButton" name="button_moveToZero">
+        <property name="text">
+         <string>Zero</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="title">
+      <string>Position</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QDial" name="dial_j1">
+        <property name="minimum">
+         <number>-180</number>
+        </property>
+        <property name="maximum">
+         <number>180</number>
+        </property>
+        <property name="wrapping">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDial" name="dial_j2">
+        <property name="minimum">
+         <number>-180</number>
+        </property>
+        <property name="maximum">
+         <number>180</number>
+        </property>
+        <property name="wrapping">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Joint 1</string>
         </property>
@@ -119,53 +306,8 @@
         </property>
        </widget>
       </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QPushButton" name="button_j2Forward">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="resource.qrc">
-          <normaloff>:/images/move_forward.png</normaloff>:/images/move_forward.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="button_j2Stop">
-        <property name="text">
-         <string>zero</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="button_j2Backward">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="resource.qrc">
-          <normaloff>:/images/move_back.png</normaloff>:/images/move_back.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_j2">
+      <item row="1" column="1">
+       <widget class="QLabel" name="label_j2b">
         <property name="text">
          <string>Joint 2</string>
         </property>
@@ -175,239 +317,67 @@
        </widget>
       </item>
      </layout>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>200</y>
-     <width>171</width>
-     <height>153</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Drive Control</string>
-   </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="1">
-     <widget class="QPushButton" name="button_driveForward">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/images/move_forward.png</normaloff>:/images/move_forward.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>32</width>
-        <height>32</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QPushButton" name="button_driveLeft">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/images/rotate_left.png</normaloff>:/images/rotate_left.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>32</width>
-        <height>32</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="button_driveBackward">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/images/move_back.png</normaloff>:/images/move_back.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>32</width>
-        <height>32</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QPushButton" name="button_driveRight">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/images/rotate_right.png</normaloff>:/images/rotate_right.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>32</width>
-        <height>32</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0" colspan="3">
-     <widget class="QPushButton" name="button_moveToZero">
-      <property name="text">
-       <string>Zero</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_3">
-   <property name="geometry">
-    <rect>
-     <x>200</x>
-     <y>200</y>
-     <width>191</width>
-     <height>151</height>
-    </rect>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-   <property name="title">
-    <string>Position</string>
-   </property>
-   <property name="flat">
-    <bool>false</bool>
-   </property>
-   <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0">
-     <widget class="QDial" name="dial_j1">
-      <property name="minimum">
-       <number>-180</number>
-      </property>
-      <property name="maximum">
-       <number>180</number>
-      </property>
-      <property name="wrapping">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QDial" name="dial_j2">
-      <property name="minimum">
-       <number>-180</number>
-      </property>
-      <property name="maximum">
-       <number>180</number>
-      </property>
-      <property name="wrapping">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_4">
-      <property name="text">
-       <string>Joint 1</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLabel" name="label_j2b">
-      <property name="text">
-       <string>Joint 2</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_4">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>360</y>
-     <width>171</width>
-     <height>86</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Speed</string>
-   </property>
-   <layout class="QGridLayout" name="gridLayout_3">
-    <item row="0" column="0">
-     <widget class="QSlider" name="slider_speed1">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QSlider" name="slider_speed2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLineEdit" name="edit_speed1"/>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="edit_speed2"/>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_5">
-   <property name="geometry">
-    <rect>
-     <x>200</x>
-     <y>360</y>
-     <width>171</width>
-     <height>86</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Acceleration</string>
-   </property>
-   <layout class="QGridLayout" name="gridLayout_4">
-    <item row="1" column="0">
-     <widget class="QLineEdit" name="edit_accel1"/>
-    </item>
-    <item row="0" column="0">
-     <widget class="QSlider" name="slider_accel1">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="edit_accel2"/>
-    </item>
-    <item row="0" column="1">
-     <widget class="QSlider" name="slider_accel2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>Speed</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QSlider" name="slider_speed1">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSlider" name="slider_speed2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="edit_speed1"/>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="edit_speed2"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QGroupBox" name="groupBox_5">
+     <property name="title">
+      <string>Acceleration</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="edit_accel1"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QSlider" name="slider_accel1">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="edit_accel2"/>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSlider" name="slider_accel2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources>
   <include location="resource.qrc"/>
