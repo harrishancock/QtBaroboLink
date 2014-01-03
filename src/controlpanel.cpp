@@ -51,10 +51,19 @@ void ControlPanelForm::driveJoint1To(int angle)
    * our joint directions. */
   asyncrobot_->driveJointTo(1, -angle);
 }
+
 void ControlPanelForm::driveJoint2To(int angle)
 {
   asyncrobot_->driveJointTo(2, -angle);
   asyncrobot_->driveJointTo(3, -angle);
+}
+
+void ControlPanelForm::enable(int state)
+{
+  enabled_ = state;
+  if(state) {
+  } else {
+  }
 }
 
 void ControlPanelForm::setActiveRobot(int index)
@@ -67,7 +76,7 @@ void ControlPanelForm::setActiveRobot(int index)
     qDebug() << "Starting robot control thread!";
     asyncrobot_->bindMobot(mobot);
     asyncrobot_->enableJointSignals(true);
-    QMetaObject::invokeMethod(asyncrobot_, "doWork", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(asyncrobot_, "startWork", Qt::QueuedConnection);
   }
 }
 

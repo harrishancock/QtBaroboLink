@@ -16,8 +16,11 @@ class ControlPanelForm : public QWidget, private Ui::ControlPanelForm
     void setActiveRobot(const QModelIndex &index);
     void driveJoint1To(int);
     void driveJoint2To(int);
+    void enable(int state);
 
   private:
+    void startControlThread();
+    int enabled_;
     AsyncRobot *asyncrobot_;
     QThread *mobotthread_;
 };

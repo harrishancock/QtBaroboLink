@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMutex>
+#include <QTimer>
 #include <linkbot.h>
 
 class AsyncRobot:public QObject
@@ -22,6 +23,8 @@ class AsyncRobot:public QObject
     void disableAccelSignals();
     void acquireJointControl();
     void releaseJointControl();
+    void startWork();
+    void stopWork();
 
   signals:
     void jointAnglesChanged(double angle1, double angle2, double angle3);
@@ -43,6 +46,7 @@ class AsyncRobot:public QObject
     unsigned int anglesDirtyMask_;
     QMutex desiredJointAnglesLock_;
     bool jointControl_;
+    QTimer *timer_;
 };
 
 #endif
