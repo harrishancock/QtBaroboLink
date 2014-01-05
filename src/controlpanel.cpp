@@ -43,6 +43,10 @@ ControlPanelForm::ControlPanelForm(QWidget *parent)
   QObject::connect(asyncrobot_, SIGNAL(joint2Changed(int)),
       this->dial_j2, SLOT(setValue(int)));
 
+  QObject::connect(this->checkBox_enable, SIGNAL(stateChanged(int)), 
+      this, SLOT(enable(int)));
+  QObject::connect(this->checkBox_enable, SIGNAL(stateChanged(int)),
+      asyncrobot_, SLOT(setState(int)));
 }
  
 void ControlPanelForm::driveJoint1To(int angle)
@@ -61,9 +65,17 @@ void ControlPanelForm::driveJoint2To(int angle)
 void ControlPanelForm::enable(int state)
 {
   enabled_ = state;
+  bool enable;
   if(state) {
+    enable = true;
   } else {
+    enable = false;
   }
+  this->groupBox->setEnabled(enable);
+  this->groupBox_2->setEnabled(enable);
+  this->groupBox_3->setEnabled(enable);
+  this->groupBox_4->setEnabled(enable);
+  this->groupBox_5->setEnabled(enable);
 }
 
 void ControlPanelForm::setActiveRobot(int index)

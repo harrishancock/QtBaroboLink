@@ -17,6 +17,7 @@ class AsyncRobot:public QObject
   public slots:
     void driveJointTo(int joint, double angle);
     void doWork(); // Worker thread
+    void setState(int state);
     void enableJointSignals(bool enable = true);
     void enableAccelSignals(bool enable = true);
     void disableJointSignals();

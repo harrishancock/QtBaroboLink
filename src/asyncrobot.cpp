@@ -75,18 +75,6 @@ void AsyncRobot::driveJointTo(int joint, double angle)
   desiredJointAnglesLock_.unlock();
 }
 
-void AsyncRobot::startWork()
-{
-  mobotLock_.lock();
-  if(timer_->isActive()) {
-    mobotLock_.unlock();
-    return;
-  }
-  connect(timer_, SIGNAL(timeout()), this, SLOT(doWork()));
-  timer_->start();
-  mobotLock_.unlock();
-}
-
 void AsyncRobot::doWork()
 {
   double jointAngles[3];
@@ -141,3 +129,27 @@ void AsyncRobot::doWork()
   mobotLock_.unlock();
   QThread::yieldCurrentThread();
 }
+
+void AsyncRobot::setState(int state)
+{
+  if(state) {
+    enableJointSignals(true);
+    enableAccelSignals(true);
+  } else {
+    enableJointSignals(false);
+    enableAccelSignals(false);
+  }
+}
+
+void AsyncRobot::startWork()
+{
+  mobotLock_.lock();
+  if(timer_->isActive()) {
+    mobotLock_.unlock();
+    return;
+  }
+  connect(timer_, SIGNAL(timeout()), this, SLOT(doWork()));
+  timer_->start();
+  mobotLock_.unlock();
+}
+
