@@ -17,6 +17,7 @@ void AsyncRobot::bindMobot(CLinkbot* mobot)
 {
   mobotLock_.lock();
   mobot_ = mobot;
+  anglesDirtyMask_ = 0;
   mobotLock_.unlock();
 }
 
@@ -164,6 +165,7 @@ void AsyncRobot::startWork()
     mobotLock_.unlock();
     return;
   }
+  anglesDirtyMask_ = 0;
   connect(timer_, SIGNAL(timeout()), this, SLOT(doWork()));
   timer_->start();
   mobotLock_.unlock();
