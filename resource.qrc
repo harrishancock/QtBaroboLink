@@ -7,5 +7,6 @@
         <file>move_forward.png</file>
         <file>rotate_left.png</file>
         <file>rotate_right.png</file>
+        <file>stop.png</file>
     </qresource>
 </RCC>
