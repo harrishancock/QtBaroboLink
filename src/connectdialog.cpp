@@ -113,6 +113,9 @@ void ConnectDialogForm::connectIndices()
   for(int i = 0; i < selected.size(); i++) {
     robotManager()->connectIndex(selected.at(i).row());
   }
+  if(selected.size() > 0) {
+    emit activeRobotSelected(selected.at(0));
+  }
 }
 
 void ConnectDialogForm::disconnectIndices()

@@ -40,8 +40,12 @@ ControlPanelForm::ControlPanelForm(QWidget *parent)
 
   QObject::connect(asyncrobot_, SIGNAL(joint1Changed(int)),
       this->dial_j1, SLOT(setValue(int)));
+  QObject::connect(asyncrobot_, SIGNAL(joint1Changed(double)),
+      this, SLOT(setJ1Label(double)));
   QObject::connect(asyncrobot_, SIGNAL(joint2Changed(int)),
       this->dial_j2, SLOT(setValue(int)));
+  QObject::connect(asyncrobot_, SIGNAL(joint2Changed(double)),
+      this, SLOT(setJ2Label(double)));
 
   QObject::connect(this->checkBox_enable, SIGNAL(stateChanged(int)), 
       this, SLOT(enable(int)));
@@ -54,12 +58,14 @@ void ControlPanelForm::driveJoint1To(int angle)
   /* Negative angles because the directionality of the Qt dials is opposite of
    * our joint directions. */
   asyncrobot_->driveJointTo(1, -angle);
+  setJ1Label(-angle);
 }
 
 void ControlPanelForm::driveJoint2To(int angle)
 {
   asyncrobot_->driveJointTo(2, -angle);
   asyncrobot_->driveJointTo(3, -angle);
+  setJ2Label(-angle);
 }
 
 void ControlPanelForm::enable(int state)
@@ -76,6 +82,36 @@ void ControlPanelForm::enable(int state)
   this->groupBox_3->setEnabled(enable);
   this->groupBox_4->setEnabled(enable);
   this->groupBox_5->setEnabled(enable);
+}
+
+void ControlPanelForm::setJ1Label(int value)
+{
+  setJ1Label(QString("%1").arg(value));
+}
+
+void ControlPanelForm::setJ2Label(int value)
+{
+  setJ2Label(QString("%1").arg(value));
+}
+
+void ControlPanelForm::setJ1Label(double value)
+{
+  setJ1Label(QString("%1").arg(value, 0, 'f', 1));
+}
+
+void ControlPanelForm::setJ2Label(double value)
+{
+  setJ2Label(QString("%1").arg(value, 0, 'f', 1));
+}
+
+void ControlPanelForm::setJ1Label(const QString &value)
+{
+  this->label_j1_angle->setText(value);  
+}
+
+void ControlPanelForm::setJ2Label(const QString &value)
+{
+  this->label_j2_angle->setText(value);  
 }
 
 void ControlPanelForm::setActiveRobot(int index)

@@ -17,6 +17,12 @@ class ControlPanelForm : public QWidget, private Ui::ControlPanelForm
     void driveJoint1To(int);
     void driveJoint2To(int);
     void enable(int state);
+    void setJ1Label(int value);
+    void setJ2Label(int value);
+    void setJ1Label(double value);
+    void setJ2Label(double value);
+    void setJ1Label(const QString &value);
+    void setJ2Label(const QString &value);
 
   private:
     void startControlThread();

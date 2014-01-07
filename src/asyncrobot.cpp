@@ -94,16 +94,32 @@ void AsyncRobot::doWork()
         jointAngles[2]);
     if(memcmp(jointAngles, lastJointAngles_, sizeof(double)*3)) {
       emit jointAnglesChanged(jointAngles[0], jointAngles[1], jointAngles[2]);
+      double norm;
       if(jointAngles[0] != lastJointAngles_[0]) {
         emit joint1Changed(((int)-jointAngles[0])%360);
+        norm = fmod(jointAngles[0], 360);
+        if(norm > 180.0) {
+          norm -= 360.0;
+        }
+        emit joint1Changed(norm);
       }
       if(jointAngles[1] != lastJointAngles_[1]) {
         /* Negative angles because the directionality of the Qt dials is
          * opposite of our joint directions. */
         emit joint2Changed(((int)-jointAngles[1])%360);
+        norm = fmod(jointAngles[1], 360);
+        if(norm > 180.0) {
+          norm -= 360.0;
+        }
+        emit joint2Changed(norm);
       }
       if(jointAngles[2] != lastJointAngles_[2]) {
         emit joint2Changed(((int)-jointAngles[2])%360);
+        norm = fmod(jointAngles[1], 360);
+        if(norm > 180.0) {
+          norm -= 360.0;
+        }
+        emit joint2Changed(norm);
       }
       memcpy(lastJointAngles_, jointAngles, sizeof(double)*3);
     }

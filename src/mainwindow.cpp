@@ -40,5 +40,7 @@ void MainWindow::connectSignals()
   //QObject::connect(connectDialog_, SIGNAL(pressed(const QModelIndex &)),
       //robotManager(), SLOT(setActiveIndex(const QModelIndex)));
   QObject::connect(connectDialog_->tableView_Robots, SIGNAL(pressed(const QModelIndex &)),
-      controlPanel_, SLOT(setActiveRobot(const QModelIndex)));
+      controlPanel_, SLOT(setActiveRobot(const QModelIndex&)));
+  QObject::connect(connectDialog_, SIGNAL(activeRobotSelected(const QModelIndex &)),
+      controlPanel_, SLOT(setActiveRobot(const QModelIndex&)));
 }

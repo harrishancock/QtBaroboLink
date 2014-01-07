@@ -264,13 +264,13 @@
       <string notr="true"/>
      </property>
      <property name="title">
-      <string>Position</string>
+      <string> Position (degrees)</string>
      </property>
      <property name="flat">
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
+      <item row="1" column="0">
        <widget class="QDial" name="dial_j1">
         <property name="minimum">
          <number>-180</number>
@@ -283,7 +283,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="1" column="1">
        <widget class="QDial" name="dial_j2">
         <property name="minimum">
          <number>-180</number>
@@ -296,7 +296,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Joint 1</string>
@@ -306,10 +306,30 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="QLabel" name="label_j2b">
         <property name="text">
          <string>Joint 2</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_j1_angle">
+        <property name="text">
+         <string>N/A</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label_j2_angle">
+        <property name="text">
+         <string>N/A</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>

@@ -23,6 +23,9 @@ class ConnectDialogForm : public QWidget, public Ui::ConnectDialogForm
     void disconnectIndices();
     void removeIndices();
 
+  signals:
+    void activeRobotSelected(const QModelIndex &index);
+
   private:
     void connectSignals(void);
     ScanDialog *scanDialog_;
