@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /* Set up control panel */
     controlPanel_ = new ControlPanelForm(ui->tab_control);
+    controlPanel_->setEnabled(false);
     controlPanel_->show();
 
     /* Set up connect panel */

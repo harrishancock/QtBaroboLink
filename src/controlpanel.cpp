@@ -122,9 +122,14 @@ void ControlPanelForm::setActiveRobot(int index)
   mobot = robotManager()->getMobotIndex(index);
   if(mobot != NULL) {
     qDebug() << "Starting robot control thread!";
+    this->setEnabled(true);
     asyncrobot_->bindMobot(mobot);
     asyncrobot_->enableJointSignals(true);
     QMetaObject::invokeMethod(asyncrobot_, "startWork", Qt::QueuedConnection);
+  } else {
+    /* Stop the thread if it is running */
+    asyncrobot_->stopWork();
+    this->setEnabled(false);
   }
 }
 
