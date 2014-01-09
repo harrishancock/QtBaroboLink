@@ -63,7 +63,6 @@ qt5_add_resources(RESOURCES resource.qrc)
 
 set(SOURCES
     src/asyncrobot.cpp
-    src/commshandler.cpp
     src/configfile.cpp
     src/connectdialog.cpp
     src/controlpanel.cpp
