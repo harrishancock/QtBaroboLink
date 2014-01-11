@@ -20,20 +20,20 @@ void CommsRobotClient::init(QTcpSocket *socket, RecordMobot* robot)
 void CommsRobotClient::bytesFromClientReady()
 {
   int rc;
-  static QByteArray buf;
   QByteArray tmpbuf;
   quint8 bytebuf[128];
   tmpbuf = sock_->readAll();
-  buf += tmpbuf;
-  if( (buf.size() > 2) &&
-      (buf.size() >= buf.at(1)) )
+  recvbuf_ += tmpbuf;
+  if( (recvbuf_.size() > 2) &&
+      (recvbuf_.size() >= recvbuf_.at(1)) )
   {
     /* Received whole message */
-    memcpy(bytebuf, buf.data(), buf.size());
+    memcpy(bytebuf, recvbuf_.data(), recvbuf_.at(1));
     rc = robot_->transactMessage(bytebuf[0], &bytebuf[2], bytebuf[1]-3);
     if(rc) return;
     rc = sock_->write((const char*)&bytebuf[2], bytebuf[3]);
-    buf = buf.right(buf.size() - buf.at(1));
+    tmpbuf = recvbuf_.right(recvbuf_.size() - recvbuf_.at(1));
+    recvbuf_ = tmpbuf;
   }
 }
 

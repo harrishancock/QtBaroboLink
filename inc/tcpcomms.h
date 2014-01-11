@@ -21,6 +21,7 @@ class CommsRobotClient : public QObject
   private:
     QTcpSocket *sock_;
     RecordMobot* robot_;
+    QByteArray recvbuf_;
 };
 
 class CommsForwarding : public QObject
