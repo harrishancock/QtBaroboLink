@@ -113,6 +113,12 @@ qt5_use_modules(${TARGET} Widgets Network WebKitWidgets)
 
 install(TARGETS ${TARGET} RUNTIME DESTINATION ${INSTALL_BIN_DIR})
 
+if(APPLE)
+# Qt5 headers won't compile without the following...
+set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "-mmacosx-version-min=10.7 -stdlib=libc++")
+set_target_properties(${TARGET} PROPERTIES LINK_FLAGS "-mmacosx-version-min=10.7 -stdlib=libc++")
+endif()
+
 # Include required libraries at install-time. This is the Windows way.
 if(WIN32)
   # The application we'll be fixing up is the main target executable.
