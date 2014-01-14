@@ -23,14 +23,12 @@ SOURCES += src/main.cpp\
         src/robotmanager.cpp\
         src/recordmobot.cpp\
         src/configfile.cpp\
-        src/commshandler.cpp\
         src/qtrobotmanager.cpp\
         src/controlpanel.cpp\
         src/connectdialog.cpp\
         src/asyncrobot.cpp\
         src/scandialog.cpp\
         src/scanlist.cpp\
-        src/scanwidget.cpp\
         src/tcpcomms.cpp
 
 HEADERS  += inc/mainwindow.h\
@@ -43,7 +41,6 @@ HEADERS  += inc/mainwindow.h\
             inc/asyncrobot.h\
             inc/scandialog.h\
             inc/scanlist.h\
-            inc/scanwidget.h\
             inc/tcpcomms.h
 
 FORMS    += mainwindow.ui \
