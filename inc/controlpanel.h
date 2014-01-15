@@ -24,6 +24,17 @@ class ControlPanelForm : public QWidget, private Ui::ControlPanelForm
     void setJ1Label(const QString &value);
     void setJ2Label(const QString &value);
 
+    void j1forward_handler();
+    void j1backward_handler();
+    void j1stop_handler();
+    void j2forward_handler();
+    void j2backward_handler();
+    void j2stop_handler();
+
+signals:
+    void beginMovingJoint(int joint, int direction);
+    void stopJoint(int joint);
+
   private:
     void startControlThread();
     int enabled_;

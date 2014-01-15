@@ -76,6 +76,74 @@ void AsyncRobot::driveJointTo(int joint, double angle)
   desiredJointAnglesLock_.unlock();
 }
 
+void AsyncRobot::moveJoint(int joint, int direction)
+{
+  mobotLock_.lock();
+  mobot_->setJointMovementStateNB(
+      static_cast<robotJointId_t>(joint), 
+      static_cast<robotJointState_t>(direction));
+  if(joint == 2) {
+  mobot_->setJointMovementStateNB(
+      static_cast<robotJointId_t>(3), 
+      static_cast<robotJointState_t>(direction));
+  }
+  mobotLock_.unlock();
+}
+
+void AsyncRobot::stop()
+{
+  mobotLock_.lock();
+  mobot_->stop();
+  mobotLock_.unlock();
+}
+
+void AsyncRobot::stopJoint(int joint)
+{
+  mobotLock_.lock();
+  mobot_->stopOneJoint(static_cast<robotJointId_t>(joint));
+  mobotLock_.unlock();
+}
+
+void AsyncRobot::moveForward()
+{
+  mobotLock_.lock();
+  mobot_->moveContinuousNB(
+      ROBOT_FORWARD,
+      ROBOT_FORWARD,
+      ROBOT_FORWARD);
+  mobotLock_.unlock();
+}
+
+void AsyncRobot::moveBackward()
+{
+  mobotLock_.lock();
+  mobot_->moveContinuousNB(
+      ROBOT_BACKWARD,
+      ROBOT_BACKWARD,
+      ROBOT_BACKWARD);
+  mobotLock_.unlock();
+}
+
+void AsyncRobot::turnLeft()
+{
+  mobotLock_.lock();
+  mobot_->moveContinuousNB(
+      ROBOT_BACKWARD,
+      ROBOT_BACKWARD,
+      ROBOT_FORWARD);
+  mobotLock_.unlock();
+}
+
+void AsyncRobot::turnRight()
+{
+  mobotLock_.lock();
+  mobot_->moveContinuousNB(
+      ROBOT_FORWARD,
+      ROBOT_BACKWARD,
+      ROBOT_FORWARD);
+  mobotLock_.unlock();
+}
+
 void AsyncRobot::doWork()
 {
   double jointAngles[3];
@@ -116,7 +184,7 @@ void AsyncRobot::doWork()
       }
       if(jointAngles[2] != lastJointAngles_[2]) {
         emit joint2Changed(((int)-jointAngles[2])%360);
-        norm = fmod(jointAngles[1], 360);
+        norm = fmod(jointAngles[2], 360);
         if(norm > 180.0) {
           norm -= 360.0;
         }

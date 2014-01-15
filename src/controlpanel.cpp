@@ -16,6 +16,19 @@ ControlPanelForm::ControlPanelForm(QWidget *parent)
   asyncrobot_->moveToThread(mobotthread_);
   mobotthread_->start();
 
+  QObject::connect(this->button_j1Forward, SIGNAL(clicked()),
+      this, SLOT(j1forward_handler()));
+  QObject::connect(this->button_j1Stop, SIGNAL(clicked()),
+      this, SLOT(j1stop_handler()));
+  QObject::connect(this->button_j1Backward, SIGNAL(clicked()),
+      this, SLOT(j1backward_handler()));
+  QObject::connect(this->button_j2Forward, SIGNAL(clicked()),
+      this, SLOT(j2forward_handler()));
+  QObject::connect(this->button_j2Stop, SIGNAL(clicked()),
+      this, SLOT(j2stop_handler()));
+  QObject::connect(this->button_j2Backward, SIGNAL(clicked()),
+      this, SLOT(j2backward_handler()));
+
   QObject::connect(this->dial_j1, SIGNAL(valueChanged(int)),
       this, SLOT(driveJoint1To(int)));    
   QObject::connect(this->dial_j1, SIGNAL(sliderPressed()),
@@ -51,6 +64,11 @@ ControlPanelForm::ControlPanelForm(QWidget *parent)
       this, SLOT(enable(int)));
   QObject::connect(this->checkBox_enable, SIGNAL(stateChanged(int)),
       asyncrobot_, SLOT(setState(int)));
+
+  QObject::connect(this, SIGNAL(beginMovingJoint(int, int)),
+      asyncrobot_, SLOT(moveJoint(int, int)));
+  QObject::connect(this, SIGNAL(stopJoint(int)),
+      asyncrobot_, SLOT(stopJoint(int)));
 }
  
 void ControlPanelForm::driveJoint1To(int angle)
@@ -112,6 +130,36 @@ void ControlPanelForm::setJ1Label(const QString &value)
 void ControlPanelForm::setJ2Label(const QString &value)
 {
   this->label_j2_angle->setText(value);  
+}
+
+void ControlPanelForm::j1forward_handler()
+{
+  emit beginMovingJoint(1, 1);
+}
+
+void ControlPanelForm::j1backward_handler()
+{
+  emit beginMovingJoint(1, 2);
+}
+
+void ControlPanelForm::j1stop_handler()
+{
+  emit stopJoint(1);
+}
+
+void ControlPanelForm::j2forward_handler()
+{
+  emit beginMovingJoint(2, 1);
+}
+
+void ControlPanelForm::j2backward_handler()
+{
+  emit beginMovingJoint(2, 2);
+}
+
+void ControlPanelForm::j2stop_handler()
+{
+  emit stopJoint(2);
 }
 
 void ControlPanelForm::setActiveRobot(int index)
