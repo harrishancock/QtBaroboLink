@@ -116,6 +116,16 @@ void QtRobotManager::addEntry(QString entry)
   emit layoutChanged();
 }
 
+void QtRobotManager::toggleConnection(const QModelIndex &index)
+{
+  qDebug() << "toggle connection.";
+  if(isConnected(index.row())) {
+    QtRobotManager::disconnectIndex(index.row());
+  } else {
+    connectIndex(index.row());
+  }
+}
+
 QtRobotManager* robotManager()
 {
   static QtRobotManager *instance = 0;

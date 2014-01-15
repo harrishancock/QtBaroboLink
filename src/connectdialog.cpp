@@ -143,6 +143,8 @@ void ConnectDialogForm::connectSignals(void)
       this, SLOT(displayContextMenu(const QPoint)));
   QObject::connect(tableView_Robots, SIGNAL(pressed(const QModelIndex &)),
       robotManager(), SLOT(setActiveIndex(const QModelIndex)));
+  QObject::connect(tableView_Robots, SIGNAL(doubleClicked(const QModelIndex &)),
+      robotManager(), SLOT(toggleConnection(const QModelIndex &)));
 
   /* Connect the signals for adding new robots */
   QObject::connect(edit_robotID, SIGNAL(returnPressed()),

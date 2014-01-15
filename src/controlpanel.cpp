@@ -168,7 +168,7 @@ void ControlPanelForm::setActiveRobot(int index)
   qDebug() << index << " selected as active robot in control panel.";
   RecordMobot *mobot;
   mobot = robotManager()->getMobotIndex(index);
-  if(mobot != NULL) {
+  if(mobot != NULL && mobot->isConnected()) {
     qDebug() << "Starting robot control thread!";
     this->setEnabled(true);
     asyncrobot_->bindMobot(mobot);

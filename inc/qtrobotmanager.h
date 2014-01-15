@@ -32,6 +32,7 @@ class QtRobotManager : public QAbstractTableModel, public CRobotManager
     void disconnectActiveIndex();
     void removeActiveIndex();
     void addEntry(QString entry);
+    void toggleConnection(const QModelIndex &index);
 
   private:
     int _activeIndex;
