@@ -124,6 +124,7 @@ void QtRobotManager::toggleConnection(const QModelIndex &index)
   } else {
     connectIndex(index.row());
   }
+  emit layoutChanged();
 }
 
 QtRobotManager* robotManager()

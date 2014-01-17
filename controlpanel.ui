@@ -80,7 +80,11 @@
         <item>
          <widget class="QPushButton" name="button_j1Stop">
           <property name="text">
-           <string>zero</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resource.qrc">
+            <normaloff>:/images/stop.png</normaloff>:/images/stop.png</iconset>
           </property>
          </widget>
         </item>
@@ -135,7 +139,11 @@
         <item>
          <widget class="QPushButton" name="button_j2Stop">
           <property name="text">
-           <string>zero</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resource.qrc">
+            <normaloff>:/images/stop.png</normaloff>:/images/stop.png</iconset>
           </property>
          </widget>
         </item>
@@ -253,7 +261,7 @@
        </widget>
       </item>
       <item row="3" column="0" colspan="3">
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="button_stop">
         <property name="text">
          <string> Stop</string>
         </property>

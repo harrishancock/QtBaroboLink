@@ -31,6 +31,7 @@ class AsyncRobot:public QObject
     void disableAccelSignals();
     void acquireJointControl();
     void releaseJointControl();
+    void resetToZero();
     void startWork();
     void stopWork();
 

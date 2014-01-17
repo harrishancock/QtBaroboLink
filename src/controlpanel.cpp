@@ -69,6 +69,21 @@ ControlPanelForm::ControlPanelForm(QWidget *parent)
       asyncrobot_, SLOT(moveJoint(int, int)));
   QObject::connect(this, SIGNAL(stopJoint(int)),
       asyncrobot_, SLOT(stopJoint(int)));
+
+  /* Connect drive buttons */
+  QObject::connect(this->button_driveForward, SIGNAL(clicked()),
+      asyncrobot_, SLOT(moveForward()));
+  QObject::connect(this->button_driveBackward, SIGNAL(clicked()),
+      asyncrobot_, SLOT(moveBackward()));
+  QObject::connect(this->button_driveLeft, SIGNAL(clicked()),
+      asyncrobot_, SLOT(turnLeft()));
+  QObject::connect(this->button_driveRight, SIGNAL(clicked()),
+      asyncrobot_, SLOT(turnRight()));
+
+  QObject::connect(this->button_stop, SIGNAL(clicked()),
+      asyncrobot_, SLOT(stop()));
+  QObject::connect(this->button_moveToZero, SIGNAL(clicked()),
+      asyncrobot_, SLOT(resetToZero()));
 }
  
 void ControlPanelForm::driveJoint1To(int angle)

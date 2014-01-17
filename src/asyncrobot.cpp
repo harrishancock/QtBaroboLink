@@ -90,6 +90,13 @@ void AsyncRobot::moveJoint(int joint, int direction)
   mobotLock_.unlock();
 }
 
+void AsyncRobot::resetToZero()
+{
+  mobotLock_.lock();
+  mobot_->resetToZeroNB();
+  mobotLock_.unlock();
+}
+
 void AsyncRobot::stop()
 {
   mobotLock_.lock();
@@ -101,6 +108,9 @@ void AsyncRobot::stopJoint(int joint)
 {
   mobotLock_.lock();
   mobot_->stopOneJoint(static_cast<robotJointId_t>(joint));
+  if(joint == 2) {
+    mobot_->stopOneJoint(static_cast<robotJointId_t>(3));
+  }
   mobotLock_.unlock();
 }
 
@@ -140,7 +150,7 @@ void AsyncRobot::turnRight()
   mobot_->moveContinuousNB(
       ROBOT_FORWARD,
       ROBOT_BACKWARD,
-      ROBOT_FORWARD);
+      ROBOT_BACKWARD);
   mobotLock_.unlock();
 }
 
