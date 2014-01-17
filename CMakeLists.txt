@@ -7,6 +7,8 @@ cmake_policy(VERSION 2.8.9)
 
 project(QtBaroboLink)
 
+add_subdirectory(../libbarobo libbarobo)
+
 set(VERSION_MAJOR 2)
 set(VERSION_MINOR 0)
 set(VERSION_ALPHA 0)
@@ -36,8 +38,8 @@ set(INSTALL_BIN_DIR ${DEF_INSTALL_BIN_DIR}
 set(INSTALL_SHARE_DIR ${DEF_INSTALL_SHARE_DIR}
   CACHE PATH "data installation directory")
 
-message(STATUS "Will install binaries to ${CMAKE_INSTALL_PREFIX}/${INSTALL_BIN_DIR}")
-message(STATUS "Will install data to ${CMAKE_INSTALL_PREFIX}/${INSTALL_SHARE_DIR}")
+message(STATUS "${PROJECT_NAME} will install binaries to ${CMAKE_INSTALL_PREFIX}/${INSTALL_BIN_DIR}")
+message(STATUS "${PROJECT_NAME} will install data to ${CMAKE_INSTALL_PREFIX}/${INSTALL_SHARE_DIR}")
 
 ##############################################################################
 # Content
