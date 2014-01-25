@@ -17,6 +17,17 @@ MainWindow::MainWindow(QWidget *parent) :
     controlPanel_->setEnabled(false);
     controlPanel_->show();
 
+    /* tab_control needs a QLayout for it to be able to manage its
+     * controlPanel_ widget correctly (auto-expand, etc.). Couldn't set one
+     * in QtCreator for some reason, so we have to set it here. Passing
+     * tab_control to the QLayout constructor transfers ownership of the
+     * QLayout object to tab_control (by calling tab_control->setLayout()). */
+    QVBoxLayout* layout = new QVBoxLayout (ui->tab_control);
+    layout->addWidget(controlPanel_);
+
+    /* Looks kinda stupid with a margin. */
+    layout->setContentsMargins(0, 0, 0, 0);
+
     /* Set up connect panel */
     connectDialog_ = new ConnectDialogForm();
     ui->layout_connectArea->addWidget(connectDialog_);
