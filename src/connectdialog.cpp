@@ -85,6 +85,10 @@ void ConnectDialogForm::scanRobots()
     }
   }
   scanList_->clearAll();
+  /* Add the dongle's ID to the list */
+  Mobot_getID(dongle);
+  qDebug() << dongle->serialID;
+  scanList_->newRobot(QString(dongle->serialID));
   scanDialog_->show();
   Mobot_registerScanCallback(dongle, scanCallbackWrapper);
   Mobot_queryAddresses(dongle);

@@ -1,11 +1,12 @@
 #ifndef _QTROBOTMANAGER_H_
 #define _QTROBOTMANAGER_H_
 
-#include <QStyle>
-#include <QList>
-#include <QWidget>
 #include <QAbstractTableModel>
+#include <QList>
 #include <QPoint>
+#include <QRunnable>
+#include <QStyle>
+#include <QWidget>
 #include "robotmanager.h"
 
 /* Note: No need to instantiate this class explicitly. Use the robotManager()
@@ -40,4 +41,19 @@ class QtRobotManager : public QAbstractTableModel, public CRobotManager
 
 QtRobotManager* robotManager();
 
+class RobotConnectWorker : public QObject, public QRunnable
+{
+  Q_OBJECT
+  public:
+    RobotConnectWorker(QObject *parent, int connectIndex);
+    ~RobotConnectWorker();
+    void run();
+
+  signals:
+    void connectInitiated();
+    void connectFailed();
+    void connectSuccess();
+  private:
+    int connectIndex_;
+};
 #endif

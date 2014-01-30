@@ -8,5 +8,6 @@
         <file>rotate_left.png</file>
         <file>rotate_right.png</file>
         <file>stop.png</file>
+        <file>orb_gray.png</file>
     </qresource>
 </RCC>
