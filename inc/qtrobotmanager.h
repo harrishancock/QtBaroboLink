@@ -41,6 +41,10 @@ class QtRobotManager : public QAbstractTableModel, public CRobotManager
     void refreshData();
     void displayMessageDialog(const QString & msg);
 
+  signals:
+    void activeRobotSelected(int index);
+
+
   private:
     int _activeIndex;
     bool disableEntry_[MAX_CONNECTED];

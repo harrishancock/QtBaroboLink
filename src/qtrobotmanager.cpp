@@ -195,6 +195,7 @@ void QtRobotManager::refreshData()
 {
   emit dataChanged(createIndex(0, 0, (void*)NULL), createIndex(numEntries(), 0, (void*)NULL));
   emit layoutChanged();
+  emit activeRobotSelected(_activeIndex);
 }
 
 void QtRobotManager::displayMessageDialog(const QString & msg)
