@@ -115,7 +115,9 @@ void ConnectDialogForm::connectIndices()
 {
   QModelIndexList selected = tableView_Robots->selectionModel()->selectedIndexes();
   for(int i = 0; i < selected.size(); i++) {
-    robotManager()->connectIndex(selected.at(i).row());
+    QMetaObject::invokeMethod(
+        robotManager(), "connectIndex", Qt::QueuedConnection, 
+        Q_ARG(int, selected.at(i).row()));
   }
   if(selected.size() > 0) {
     emit activeRobotSelected(selected.at(0));

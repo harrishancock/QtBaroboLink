@@ -152,7 +152,7 @@ int QtRobotManager::disconnectIndex(int index)
 void QtRobotManager::connectActiveIndex()
 {
   qDebug() << "Connect to index " << _activeIndex;
-  int rc = connectIndex(_activeIndex);
+  int rc = QtRobotManager::connectIndex(_activeIndex);
   if(rc) {
     QMessageBox box;
     box.setText("Could not connect to robot. Please make sure there is a dongle plugged in and the robot is on.");
