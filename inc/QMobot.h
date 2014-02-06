@@ -12,4 +12,5 @@ class QMobot : public QObject, public RecordMobot
 
   signals:
     void connectStatusChanged(int connectStatus);
+    void connectError(const QString & msg);
 };

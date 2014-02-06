@@ -17,6 +17,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void init();
+
+public slots:
+    void errorDialog(const QString & msg);
 
 private:
     Ui::MainWindow *ui;
@@ -26,4 +30,5 @@ private:
     void connectSignals();
 };
 
+MainWindow* mainWindow();
 #endif // MAINWINDOW_H

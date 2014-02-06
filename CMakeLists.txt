@@ -57,6 +57,7 @@ include_directories(${LIBBAROBO_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/inc ${PROJEC
 # Using gnu++11 instead of c++11 to workaround off64_t issue in late versions
 # of MinGW: http://sourceforge.net/p/mingw/bugs/2024
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DQT_NO_DEBUG_OUTPUT")
 
 ##############################################################################
 # Targets

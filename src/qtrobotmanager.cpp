@@ -1,3 +1,4 @@
+#include "mainwindow.h"
 #include "qtrobotmanager.h"
 #include <QCursor>
 #include <QDebug>
@@ -113,6 +114,8 @@ int QtRobotManager::read(const char* path)
     _mobots[i] = new QMobot(0);
     QObject::connect(_mobots[i], SIGNAL(connectStatusChanged(int)), 
         this, SLOT(refreshData()));
+    QObject::connect(_mobots[i], SIGNAL(connectError(const QString &)), 
+        mainWindow(), SLOT(errorDialog(const QString &)), Qt::QueuedConnection);
   }
 }
 
@@ -200,9 +203,10 @@ void QtRobotManager::refreshData()
 
 void QtRobotManager::displayMessageDialog(const QString & msg)
 {
-  QMessageBox b;
-  b.setText(msg);
-  b.exec();
+  QMessageBox *b = new QMessageBox(0);
+  b->setText(msg);
+  b->exec();
+  delete b;
 }
 
 QtRobotManager* robotManager()

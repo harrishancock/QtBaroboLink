@@ -180,11 +180,9 @@ void ControlPanelForm::j2stop_handler()
 void ControlPanelForm::setActiveRobot(int index)
 {
   /* Get the mobot object */
-  qDebug() << index << " selected as active robot in control panel.";
   RecordMobot *mobot;
   mobot = robotManager()->getMobotIndex(index);
   if(mobot != NULL && mobot->isConnected()) {
-    qDebug() << "Starting robot control thread!";
     this->setEnabled(true);
     asyncrobot_->bindMobot(mobot);
     asyncrobot_->enableJointSignals(true);

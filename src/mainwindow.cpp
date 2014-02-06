@@ -5,13 +5,22 @@
 #include "connectdialog.h"
 #include <QObject>
 #include <QDebug>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+}
 
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::init()
+{
     /* Set up control panel */
     controlPanel_ = new ControlPanelForm(ui->tab_control);
     controlPanel_->setEnabled(false);
@@ -40,9 +49,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connectSignals();
 }
 
-MainWindow::~MainWindow()
+void MainWindow::errorDialog(const QString & msg)
 {
-    delete ui;
+  QMessageBox msgBox;
+  msgBox.setText(msg);
+  msgBox.exec();
 }
 
 void MainWindow::connectSignals()
@@ -54,3 +65,4 @@ void MainWindow::connectSignals()
   QObject::connect(robotManager(), SIGNAL(activeRobotSelected(int)), 
       controlPanel_, SLOT(setActiveRobot(int)));
 }
+
