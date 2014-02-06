@@ -6,6 +6,7 @@
 #include <QPoint>
 #include <QRunnable>
 #include <QStyle>
+#include <QThreadPool>
 #include <QWidget>
 #include "robotmanager.h"
 
@@ -22,9 +23,12 @@ class QtRobotManager : public QAbstractTableModel, public CRobotManager
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     inline int activeIndex() const {return _activeIndex;}
-    int disconnectIndex(int index);
+    int read(const char* path);
 
   public slots:
+    int connectIndex(int index);
+    int disconnectIndex(int index);
+
     void displayContextMenu(const QPoint &p);
     inline void setActiveIndex(int index) {_activeIndex = index;}
     void setActiveIndex(const QModelIndex &index);
@@ -34,13 +38,18 @@ class QtRobotManager : public QAbstractTableModel, public CRobotManager
     void removeActiveIndex();
     void addEntry(QString entry);
     void toggleConnection(const QModelIndex &index);
+    void refreshData();
+    void displayMessageDialog(const QString & msg);
 
   private:
     int _activeIndex;
+    bool disableEntry_[MAX_CONNECTED];
+    QThreadPool *threadPool_;
 };
 
 QtRobotManager* robotManager();
 
+#if 0
 class RobotConnectWorker : public QObject, public QRunnable
 {
   Q_OBJECT
@@ -50,10 +59,11 @@ class RobotConnectWorker : public QObject, public QRunnable
     void run();
 
   signals:
-    void connectInitiated();
-    void connectFailed();
-    void connectSuccess();
+    void connectStatusChanged();
+    void connectFailed(const QString & msg);
+
   private:
     int connectIndex_;
 };
+#endif
 #endif

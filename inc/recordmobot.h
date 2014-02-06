@@ -105,6 +105,8 @@ class RecordMobot : public CLinkbot
     recordMobotConnectStatus_t connectStatus();
     inline bool isBound() {return _bound;}
 
+  protected:
+    recordMobotConnectStatus_t _connectStatus;
   private:
     int _numMotions;
     struct motion_s **_motions;
@@ -113,7 +115,6 @@ class RecordMobot : public CLinkbot
     char _address[80];
     bool _bound; /* Is the mobot bound via external TCP socket? */
     int _firmwareVersion;
-    recordMobotConnectStatus_t _connectStatus;
     int _dirty;
     int _rgb[3];
 };

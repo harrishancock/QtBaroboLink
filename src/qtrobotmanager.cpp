@@ -3,15 +3,31 @@
 #include <QDebug>
 #include <QMenu>
 #include <QMessageBox>
+#include <QThreadPool>
 #include <QVariant>
 
 QtRobotManager::QtRobotManager(QObject *parent)
   :QAbstractTableModel(parent)
 {
+  threadPool_ = new QThreadPool(this);
+  memset(disableEntry_, 0, sizeof(bool)*MAX_CONNECTED);
+  int i;
+  for(i = 0; i < numEntries(); i++) {
+    QObject::connect(_mobots[i], SIGNAL(connectStatusChanged(int)), 
+        this, SLOT(refreshData()));
+  }
+
+  qRegisterMetaType< QVector<int> > ("QVector<int>");
 }
 
 QtRobotManager::~QtRobotManager()
 {
+}
+
+int QtRobotManager::connectIndex(int index)
+{
+  int rc = CRobotManager::connectIndex(index);
+  return rc;
 }
 
 int QtRobotManager::rowCount(const QModelIndex & ) const
@@ -50,10 +66,24 @@ QVariant QtRobotManager::data(const QModelIndex &index, int role) const
   }
   if(role == Qt::DecorationRole) {
     if(index.column() == 0) {
-      if(isConnected(index.row())) {
-        return QIcon(":/images/orb_green.png");
-      } else {
+      RecordMobot* mobot;
+      mobot = robotManager()->getMobotIndex(index.row());
+      if(mobot == NULL) {
         return QIcon(":/images/orb_red.png");
+      }
+      switch(mobot->connectStatus()) {
+        case RMOBOT_NOT_CONNECTED:
+          return QIcon(":/images/orb_red.png");
+          break;
+        case RMOBOT_CONNECTING:
+          return QIcon(":/images/orb_yellow.png");
+          break;
+        case RMOBOT_CONNECTED:
+          return QIcon(":/images/orb_green.png");
+          break;
+        default:
+          return QIcon(":/images/orb_red.png");
+          break;
       }
     } 
   }
@@ -72,6 +102,18 @@ QVariant QtRobotManager::data(const QModelIndex &index, int role) const
   }
   */
   return QVariant();
+}
+
+int QtRobotManager::read(const char* path)
+{
+  int rc = ConfigFile::read(path);
+  if(rc) return rc;
+  int i;
+  for(i = 0; i < numEntries(); i++) {
+    _mobots[i] = new QMobot(0);
+    QObject::connect(_mobots[i], SIGNAL(connectStatusChanged(int)), 
+        this, SLOT(refreshData()));
+  }
 }
 
 void QtRobotManager::displayContextMenu(const QPoint &)
@@ -121,7 +163,6 @@ void QtRobotManager::connectActiveIndex()
 
 void QtRobotManager::disconnectActiveIndex()
 {
-  qDebug() << "Disconnect from index " << _activeIndex;
   CRobotManager::disconnect(_activeIndex);
 }
 
@@ -142,46 +183,37 @@ void QtRobotManager::addEntry(QString entry)
 
 void QtRobotManager::toggleConnection(const QModelIndex &index)
 {
-  qDebug() << "toggle connection.";
   if(isConnected(index.row())) {
     QtRobotManager::disconnectIndex(index.row());
   } else {
-    RobotConnectWorker *w = new RobotConnectWorker(this, index.row());
-    int rc = connectIndex(index.row());
-    if(rc) {
-      QMessageBox box;
-      box.setText("Could not connect to robot. Please make sure there is a dongle plugged in and the robot is on.");
-      box.exec();
-    }
+    QtRobotManager::connectIndex(index.row());
   }
   emit layoutChanged();
 }
 
+void QtRobotManager::refreshData()
+{
+  emit dataChanged(createIndex(0, 0, (void*)NULL), createIndex(numEntries(), 0, (void*)NULL));
+  emit layoutChanged();
+}
+
+void QtRobotManager::displayMessageDialog(const QString & msg)
+{
+  QMessageBox b;
+  b.setText(msg);
+  b.exec();
+}
+
 QtRobotManager* robotManager()
 {
+  static QThread *robotManagerThread = new QThread(0);
   static QtRobotManager *instance = 0;
   if(0 == instance) {
     instance = new QtRobotManager(0);
     instance->read( Mobot_getConfigFilePath() );
+    instance->moveToThread(robotManagerThread);
+    robotManagerThread->start();
   }
   return instance;
-}
-
-RobotConnectWorker::RobotConnectWorker(QObject *parent, int connectIndex)
-  :QObject(parent),connectIndex_(connectIndex)
-{
-}
-
-RobotConnectWorker::~RobotConnectWorker()
-{
-}
-
-void RobotConnectWorker::run()
-{
-  int rc;
-  emit connectInitiated();
-  rc = robotManager()->connectIndex(connectIndex_);
-  if(rc) emit connectFailed();
-  else emit connectSuccess();
 }
 

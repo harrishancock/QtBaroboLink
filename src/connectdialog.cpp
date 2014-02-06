@@ -139,12 +139,6 @@ void ConnectDialogForm::removeIndices()
   }
 }
 
-void ConnectDialogForm::toggleConnection(const QModelIndex &index)
-{
-  robotManager()->toggleConnection(index);
-  emit activeRobotSelected(index);
-}
-
 void ConnectDialogForm::connectSignals(void)
 {
   /* Set up robot tableView signals */
@@ -154,7 +148,7 @@ void ConnectDialogForm::connectSignals(void)
   QObject::connect(tableView_Robots, SIGNAL(pressed(const QModelIndex &)),
       robotManager(), SLOT(setActiveIndex(const QModelIndex)));
   QObject::connect(tableView_Robots, SIGNAL(doubleClicked(const QModelIndex &)),
-      this, SLOT(toggleConnection(const QModelIndex &)));
+      robotManager(), SLOT(toggleConnection(const QModelIndex &)));
 
   /* Connect the signals for adding new robots */
   QObject::connect(edit_robotID, SIGNAL(returnPressed()),

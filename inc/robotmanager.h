@@ -26,6 +26,7 @@
 #include "configfile.h"
 #include <mobot.h>
 #include "recordmobot.h"
+#include "QMobot.h"
 
 #define MAX_CONNECTED 100
 using namespace std;
@@ -61,9 +62,10 @@ class CRobotManager : public ConfigFile
     string* generatePythonProgram(bool looped = false, bool holdOnExit = false);
     bool _isPlaying;
     int _newDndIndex;
+  protected:
+    QMobot *_mobots[MAX_CONNECTED];
   private:
-    RecordMobot *_mobots[MAX_CONNECTED];
-    RecordMobot *_tmpMobot;
+    QMobot *_tmpMobot;
     /* _connectAddresses is an array of pointers to 
        ConfigFile::_addresses */
 };

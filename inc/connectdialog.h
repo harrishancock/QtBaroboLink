@@ -22,7 +22,6 @@ class ConnectDialogForm : public QWidget, public Ui::ConnectDialogForm
     void connectIndices();
     void disconnectIndices();
     void removeIndices();
-    void toggleConnection(const QModelIndex &index);
 
   signals:
     void activeRobotSelected(const QModelIndex &index);

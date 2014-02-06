@@ -78,6 +78,7 @@ set(SOURCES
     src/scandialog.cpp
     src/scanlist.cpp
     src/tcpcomms.cpp
+    src/QMobot.cpp
    )
 
 set(HEADERS
@@ -89,6 +90,7 @@ set(HEADERS
     inc/scandialog.h
     inc/scanlist.h
     inc/tcpcomms.h
+    inc/QMobot.h
    )
 
 set(UIFILES

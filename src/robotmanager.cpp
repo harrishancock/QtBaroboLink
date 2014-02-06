@@ -27,6 +27,9 @@ CRobotManager::CRobotManager()
   for(i = 0; i < MAX_CONNECTED; i++) {
     _mobots[i] = NULL;
   }
+  for(i = 0; i < numEntries(); i++) {
+    _mobots[i] = new QMobot(0);
+  }
   _isPlaying = false;
 }
 
@@ -56,7 +59,7 @@ int CRobotManager::addEntry(const char* entry)
   for(int i = (numEntries()-1); i >= 0; i--) {
     _mobots[i+1] = _mobots[i];
   }
-  _mobots[0] = NULL;
+  _mobots[0] = new QMobot(0);
   return 0;
 }
 
@@ -87,7 +90,7 @@ int CRobotManager::moveEntryUp(int index)
     return rc;
   }
   /* Just swap the data of this entry with the one above it */
-  RecordMobot* tmp;
+  QMobot* tmp;
   tmp = _mobots[index-1];
   _mobots[index-1] = _mobots[index];
   _mobots[index] = tmp;
@@ -101,7 +104,7 @@ int CRobotManager::moveEntryDown(int index)
     return rc;
   }
   /* Swap with entry below */
-  RecordMobot *tmp;
+  QMobot *tmp;
   tmp = _mobots[index+1];
   _mobots[index+1] = _mobots[index];
   _mobots[index] = tmp;
@@ -119,7 +122,7 @@ int CRobotManager::insertEntry(const char* entry, int index)
   for(i = numEntries(); i >= index; i--) {
     _mobots[i+1] = _mobots[i];
   }
-  _mobots[index] = NULL;
+  _mobots[index] = new QMobot(0);
   return 0;
 }
 
@@ -137,9 +140,9 @@ int CRobotManager::connectIndex(int index)
   sprintf(name, "mobot%d", numConnected()+1);
   int err;
   if(_mobots[index] == NULL) {
-    _mobots[index] = new RecordMobot();
+    _mobots[index] = new QMobot(0);
   }
-  _mobots[index]->init(name);;
+  _mobots[index]->init(name);
   printf("(barobo) INFO: connecting %s at address %s\n", name, getEntry(index));
   err = _mobots[index]->connectWithAddress(getEntry(index), 1 );
   return err;
@@ -157,7 +160,7 @@ int CRobotManager::disconnect(int index)
     Mobot_disconnect((mobot_t*)_mobots[index]);
   }
   //free(_mobots[index]);
-  _mobots[index] = NULL;
+  //_mobots[index] = NULL;
   return 0;
 }
 
@@ -210,11 +213,13 @@ void CRobotManager::record()
 int CRobotManager::remove(int index)
 {
   int rc;
+  disconnect(index);
   if((rc = ConfigFile::remove(index)) != 0) {
     return rc;
   }
   /* Adjust the list of mobots */
   _tmpMobot = _mobots[index];
+  delete _tmpMobot;
   int i;
   for(i = index; i < numEntries(); i++) {
     _mobots[i] = _mobots[i+1];

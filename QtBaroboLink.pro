@@ -29,7 +29,8 @@ SOURCES += src/main.cpp\
         src/asyncrobot.cpp\
         src/scandialog.cpp\
         src/scanlist.cpp\
-        src/tcpcomms.cpp
+        src/tcpcomms.cpp\
+        src/QMobot.cpp
 
 HEADERS  += inc/mainwindow.h\
             inc/robotmanager.h\
@@ -41,7 +42,8 @@ HEADERS  += inc/mainwindow.h\
             inc/asyncrobot.h\
             inc/scandialog.h\
             inc/scanlist.h\
-            inc/tcpcomms.h
+            inc/tcpcomms.h\
+            inc/QMobot.h
 
 FORMS    += mainwindow.ui \
     controlpanel.ui \
