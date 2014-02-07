@@ -32,6 +32,8 @@ class AsyncRobot:public QObject
     void acquireJointControl();
     void releaseJointControl();
     void resetToZero();
+    void setSpeed1(int speed);
+    void setSpeed2(int speed);
     void startWork();
     void stopWork();
 
@@ -42,6 +44,10 @@ class AsyncRobot:public QObject
     void joint1Changed(int angle);
     void joint2Changed(int angle);
     void accelChanged(double x, double y, double z);
+    void speed1Changed(double speed);
+    void speed1Changed(int speed);
+    void speed2Changed(double speed);
+    void speed2Changed(int speed);
 
   private:
     CLinkbot* mobot_;

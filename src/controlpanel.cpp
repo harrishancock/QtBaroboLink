@@ -16,6 +16,7 @@ ControlPanelForm::ControlPanelForm(QWidget *parent)
   asyncrobot_->moveToThread(mobotthread_);
   mobotthread_->start();
 
+  /* Connect motor drive buttons */
   QObject::connect(this->button_j1Forward, SIGNAL(clicked()),
       this, SLOT(j1forward_handler()));
   QObject::connect(this->button_j1Stop, SIGNAL(clicked()),
@@ -29,6 +30,7 @@ ControlPanelForm::ControlPanelForm(QWidget *parent)
   QObject::connect(this->button_j2Backward, SIGNAL(clicked()),
       this, SLOT(j2backward_handler()));
 
+  /* Connect motor position dials */
   QObject::connect(this->dial_j1, SIGNAL(valueChanged(int)),
       this, SLOT(driveJoint1To(int)));    
   QObject::connect(this->dial_j1, SIGNAL(sliderPressed()),
@@ -84,6 +86,32 @@ ControlPanelForm::ControlPanelForm(QWidget *parent)
       asyncrobot_, SLOT(stop()));
   QObject::connect(this->button_moveToZero, SIGNAL(clicked()),
       asyncrobot_, SLOT(resetToZero()));
+
+  /* Connect speed sliders */
+  this->slider_speed1->setRange(0, 200);
+  this->slider_speed2->setRange(0, 200);
+  QObject::connect(asyncrobot_, SIGNAL(speed1Changed(int)),
+      this->slider_speed1, SLOT(setValue(int)));
+  QObject::connect(asyncrobot_, SIGNAL(speed1Changed(double)),
+      this, SLOT(setSpeed1Label(double)));
+  QObject::connect(this->slider_speed1, SIGNAL(valueChanged(int)),
+      asyncrobot_, SLOT(setSpeed1(int)));
+  QObject::connect(this->slider_speed1, SIGNAL(valueChanged(int)),
+      this, SLOT(setSpeed1Label(int)));
+  QObject::connect(this->edit_speed1, SIGNAL(returnPressed()),
+      this, SLOT(speed1EntryActivated()));
+
+  QObject::connect(asyncrobot_, SIGNAL(speed2Changed(int)),
+      this->slider_speed2, SLOT(setValue(int)));
+  QObject::connect(asyncrobot_, SIGNAL(speed2Changed(double)),
+      this, SLOT(setSpeed2Label(double)));
+  QObject::connect(this->slider_speed2, SIGNAL(valueChanged(int)),
+      asyncrobot_, SLOT(setSpeed2(int)));
+  QObject::connect(this->slider_speed2, SIGNAL(valueChanged(int)),
+      this, SLOT(setSpeed2Label(int)));
+  QObject::connect(this->edit_speed2, SIGNAL(returnPressed()),
+      this, SLOT(speed2EntryActivated()));
+
 }
  
 void ControlPanelForm::driveJoint1To(int angle)
@@ -175,6 +203,42 @@ void ControlPanelForm::j2backward_handler()
 void ControlPanelForm::j2stop_handler()
 {
   emit stopJoint(2);
+}
+
+void ControlPanelForm::setSpeed1Label(double value)
+{
+  this->edit_speed1->clear();
+  this->edit_speed1->setText(QString::number(value));
+}
+
+void ControlPanelForm::setSpeed1Label(int value)
+{
+  this->edit_speed1->clear();
+  this->edit_speed1->setText(QString::number(value));
+}
+
+void ControlPanelForm::speed1EntryActivated()
+{
+  QString text = this->edit_speed1->text();
+  this->slider_speed1->setValue(text.toInt());
+}
+
+void ControlPanelForm::setSpeed2Label(double value)
+{
+  this->edit_speed2->clear();
+  this->edit_speed2->setText(QString::number(value));
+}
+
+void ControlPanelForm::setSpeed2Label(int value)
+{
+  this->edit_speed2->clear();
+  this->edit_speed2->setText(QString::number(value));
+}
+
+void ControlPanelForm::speed2EntryActivated()
+{
+  QString text = this->edit_speed2->text();
+  this->slider_speed2->setValue(text.toInt());
 }
 
 void ControlPanelForm::setActiveRobot(int index)

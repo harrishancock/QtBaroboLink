@@ -31,9 +31,18 @@ class ControlPanelForm : public QWidget, private Ui::ControlPanelForm
     void j2backward_handler();
     void j2stop_handler();
 
+    void setSpeed1Label(double value);
+    void setSpeed1Label(int value);
+    void speed1EntryActivated();
+    void setSpeed2Label(double value);
+    void setSpeed2Label(int value);
+    void speed2EntryActivated();
+
 signals:
     void beginMovingJoint(int joint, int direction);
     void stopJoint(int joint);
+    void speed1Changed(int);
+    void speed2Changed(int);
 
   private:
     void startControlThread();

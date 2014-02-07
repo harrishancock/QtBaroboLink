@@ -97,6 +97,21 @@ void AsyncRobot::resetToZero()
   mobotLock_.unlock();
 }
 
+void AsyncRobot::setSpeed1(int speed)
+{
+  mobotLock_.lock();
+  mobot_->setJointSpeed((robotJointId_t)1, speed);
+  mobotLock_.unlock();
+}
+
+void AsyncRobot::setSpeed2(int speed)
+{
+  mobotLock_.lock();
+  mobot_->setJointSpeed((robotJointId_t)2, speed);
+  mobot_->setJointSpeed((robotJointId_t)3, speed);
+  mobotLock_.unlock();
+}
+
 void AsyncRobot::stop()
 {
   mobotLock_.lock();
@@ -242,6 +257,27 @@ void AsyncRobot::startWork()
   if(timer_->isActive()) {
     mobotLock_.unlock();
     return;
+  }
+  if(
+      (mobot_ != NULL) &&
+      (mobot_->isConnected())
+    ) {
+    /* Get the motor speeds */
+    double speeds[3];
+    int formFactor;
+    mobot_->getFormFactor(formFactor);
+    mobot_->getJointSpeeds(speeds[0], speeds[1], speeds[2]);
+    if(formFactor == MOBOTFORM_I) {
+      emit speed1Changed(speeds[0]);
+      emit speed1Changed((int)speeds[0]);
+      emit speed2Changed(speeds[2]);
+      emit speed2Changed((int)speeds[2]);
+    } else if (formFactor == MOBOTFORM_L) {
+      emit speed1Changed(speeds[0]);
+      emit speed1Changed((int)speeds[0]);
+      emit speed2Changed(speeds[1]);
+      emit speed2Changed((int)speeds[1]);
+    }
   }
   anglesDirtyMask_ = 0;
   connect(timer_, SIGNAL(timeout()), this, SLOT(doWork()));
