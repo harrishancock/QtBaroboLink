@@ -37,11 +37,16 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_control">
         <attribute name="title">
          <string>Control</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="tab_aux">
+        <attribute name="title">
+         <string>Auxiliary Control, Sensors</string>
         </attribute>
        </widget>
        <widget class="QWidget" name="tab_poseTeaching">

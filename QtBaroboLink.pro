@@ -49,7 +49,8 @@ FORMS    += mainwindow.ui \
     controlpanel.ui \
     connectpanel.ui \
     scandialog.ui \
-    scanwidget.ui
+    scanwidget.ui \
+    auxcontrol.ui
 
 LIBS += -Llibbarobo/build/ -lbaroboStatic -lbluetooth\
         -Llibbarobo/build/BaroboConfigFile -lbaroboconfigfile\
