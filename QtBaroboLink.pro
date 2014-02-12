@@ -30,7 +30,8 @@ SOURCES += src/main.cpp\
         src/scandialog.cpp\
         src/scanlist.cpp\
         src/tcpcomms.cpp\
-        src/QMobot.cpp
+        src/QMobot.cpp\
+        src/auxcontrolpanel.cpp
 
 HEADERS  += inc/mainwindow.h\
             inc/robotmanager.h\
@@ -43,7 +44,8 @@ HEADERS  += inc/mainwindow.h\
             inc/scandialog.h\
             inc/scanlist.h\
             inc/tcpcomms.h\
-            inc/QMobot.h
+            inc/QMobot.h\
+            inc/auxcontrolpanel.h
 
 FORMS    += mainwindow.ui \
     controlpanel.ui \

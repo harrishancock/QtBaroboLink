@@ -7,11 +7,11 @@
 #include "recordmobot.h"
 #include "qtrobotmanager.h"
 
-ControlPanelForm::ControlPanelForm(QWidget *parent)
+ControlPanelForm::ControlPanelForm(AsyncRobot* asyncRobot, QWidget *parent)
   : QWidget(parent)
 {
   setupUi(this);
-  asyncrobot_ = new AsyncRobot();
+  asyncrobot_ = asyncRobot;
   mobotthread_ = new QThread();
   asyncrobot_->moveToThread(mobotthread_);
   mobotthread_->start();
@@ -250,6 +250,7 @@ void ControlPanelForm::setActiveRobot(int index)
     this->setEnabled(true);
     asyncrobot_->bindMobot(mobot);
     asyncrobot_->enableJointSignals(true);
+    asyncrobot_->enableAccelSignals(true);
     QMetaObject::invokeMethod(asyncrobot_, "startWork", Qt::QueuedConnection);
   } else {
     /* Stop the thread if it is running */

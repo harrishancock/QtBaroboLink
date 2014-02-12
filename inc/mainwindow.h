@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "auxcontrolpanel.h"
 #include "controlpanel.h"
 #include "connectdialog.h"
 #include "tcpcomms.h"
@@ -24,7 +25,9 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    AsyncRobot *asyncRobot_;
     ControlPanelForm *controlPanel_;
+    AuxControlPanelForm *auxControlPanel_;
     ConnectDialogForm *connectDialog_;
     CommsForwarding *comms_;
     void connectSignals();

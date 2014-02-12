@@ -9,7 +9,7 @@ class ControlPanelForm : public QWidget, private Ui::ControlPanelForm
 {
   Q_OBJECT
   public:
-    ControlPanelForm(QWidget* parent = 0);
+    ControlPanelForm(AsyncRobot *asyncRobot, QWidget *parent = 0);
 
   public slots:
     void setActiveRobot(int index);

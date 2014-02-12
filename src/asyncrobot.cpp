@@ -97,6 +97,17 @@ void AsyncRobot::resetToZero()
   mobotLock_.unlock();
 }
 
+void AsyncRobot::setBuzzerFrequency(int freq)
+{
+  mobotLock_.lock();
+  if(mobot_ == NULL) {
+    mobotLock_.unlock();
+    return;
+  }
+  mobot_->setBuzzerFrequencyOn(freq);
+  mobotLock_.unlock();
+}
+
 void AsyncRobot::setSpeed1(int speed)
 {
   mobotLock_.lock();

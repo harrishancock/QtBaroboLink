@@ -36,6 +36,7 @@ class AsyncRobot:public QObject
     void setSpeed2(int speed);
     void startWork();
     void stopWork();
+    void setBuzzerFrequency(int freq);
 
   signals:
     void jointAnglesChanged(double angle1, double angle2, double angle3);

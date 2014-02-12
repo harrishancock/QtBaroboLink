@@ -21,8 +21,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
+    /* Set up the AsyncRobot object to track remote robots */
+    asyncRobot_ = new AsyncRobot();
     /* Set up control panel */
-    controlPanel_ = new ControlPanelForm(ui->tab_control);
+    controlPanel_ = new ControlPanelForm(asyncRobot_, ui->tab_control);
     controlPanel_->setEnabled(false);
     controlPanel_->show();
 
@@ -33,6 +35,12 @@ void MainWindow::init()
      * QLayout object to tab_control (by calling tab_control->setLayout()). */
     QVBoxLayout* layout = new QVBoxLayout (ui->tab_control);
     layout->addWidget(controlPanel_);
+
+    /* Set up auxiliary control panel */
+    auxControlPanel_ = new AuxControlPanelForm(asyncRobot_, ui->tab_aux);
+    auxControlPanel_->show();
+    layout = new QVBoxLayout (ui->tab_aux);
+    layout->addWidget(auxControlPanel_);
 
     /* Looks kinda stupid with a margin. */
     layout->setContentsMargins(0, 0, 0, 0);
