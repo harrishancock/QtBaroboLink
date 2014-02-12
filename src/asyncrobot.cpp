@@ -9,6 +9,8 @@ AsyncRobot::AsyncRobot()
 {
   jointSignalEnable_ = false;
   accelSignalEnable_ = false;
+  buzzerState_ = false;
+  buzzerFreq_ = 440;
   timer_ = new QTimer(this);
 }
 
@@ -111,11 +113,38 @@ void AsyncRobot::resetToZero()
 void AsyncRobot::setBuzzerFrequency(int freq)
 {
   mobotLock_.lock();
+  buzzerFreq_ = freq;
+  if(buzzerState_) {
+    if(mobot_ == NULL) {
+      mobotLock_.unlock();
+      return;
+    }
+    mobot_->setBuzzerFrequencyOn(freq);
+  }
+  mobotLock_.unlock();
+}
+
+void AsyncRobot::setBuzzerOn()
+{
+  mobotLock_.lock();
+  buzzerState_ = true;
   if(mobot_ == NULL) {
     mobotLock_.unlock();
     return;
   }
-  mobot_->setBuzzerFrequencyOn(freq);
+  mobot_->setBuzzerFrequencyOn(buzzerFreq_);
+  mobotLock_.unlock();
+}
+
+void AsyncRobot::setBuzzerOff()
+{
+  mobotLock_.lock();
+  buzzerState_ = false;
+  if(mobot_ == NULL) {
+    mobotLock_.unlock();
+    return;
+  }
+  mobot_->setBuzzerFrequencyOn(0);
   mobotLock_.unlock();
 }
 

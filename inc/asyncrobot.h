@@ -39,6 +39,8 @@ class AsyncRobot:public QObject
     void startWork();
     void stopWork();
     void setBuzzerFrequency(int freq);
+    void setBuzzerOn();
+    void setBuzzerOff();
 
   signals:
     void jointAnglesChanged(double angle1, double angle2, double angle3);
@@ -65,6 +67,8 @@ class AsyncRobot:public QObject
     QMutex desiredJointAnglesLock_;
     bool jointControl_;
     QTimer *timer_;
+    bool buzzerState_;
+    int buzzerFreq_;
 };
 
 #endif
