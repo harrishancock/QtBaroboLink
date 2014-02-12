@@ -15,6 +15,7 @@ class AuxControlPanelForm : public QWidget, public Ui::auxcontrol
     void beepReleased();
     void buzzerSliderChanged(int value);
     void buzzerTextChanged(const QString & text);
+    void colorButtonPressed();
     void handleBuzzerCheckbox(int state);
     void setAccelEnable(int state);
     void setAccelSliders(double x, double y, double z);

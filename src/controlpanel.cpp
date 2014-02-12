@@ -253,10 +253,12 @@ void ControlPanelForm::setActiveRobot(int index)
     asyncrobot_->enableJointSignals(true);
     asyncrobot_->enableAccelSignals(true);
     QMetaObject::invokeMethod(asyncrobot_, "startWork", Qt::QueuedConnection);
+    emit setUIWidgetsState(true);
   } else {
     /* Stop the thread if it is running */
     asyncrobot_->stopWork();
     this->setEnabled(false);
+    emit setUIWidgetsState(false);
   }
 }
 

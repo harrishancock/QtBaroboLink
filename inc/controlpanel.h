@@ -43,6 +43,7 @@ signals:
     void stopJoint(int joint);
     void speed1Changed(int);
     void speed2Changed(int);
+    void setUIWidgetsState(bool state);
 
   private:
     void startControlThread();

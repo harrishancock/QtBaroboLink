@@ -42,6 +42,10 @@ void MainWindow::init()
     layout = new QVBoxLayout (ui->tab_aux);
     layout->addWidget(auxControlPanel_);
 
+    /* Connect control panel signals */
+    QObject::connect(controlPanel_, SIGNAL(setUIWidgetsState(bool)),
+        auxControlPanel_, SLOT(setEnabled(bool)));
+
     /* Looks kinda stupid with a margin. */
     layout->setContentsMargins(0, 0, 0, 0);
 

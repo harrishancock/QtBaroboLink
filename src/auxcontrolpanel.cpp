@@ -1,5 +1,6 @@
 #include "auxcontrolpanel.h"
 #include "asyncrobot.h"
+#include <QColorDialog>
 
 AuxControlPanelForm::AuxControlPanelForm(AsyncRobot* asyncRobot, QWidget *parent)
   : QWidget(parent)
@@ -19,10 +20,13 @@ AuxControlPanelForm::AuxControlPanelForm(AsyncRobot* asyncRobot, QWidget *parent
       this, SLOT(buzzerTextChanged(const QString &)));
   QObject::connect(checkBox_enableAccel, SIGNAL(stateChanged(int)),
       this, SLOT(setAccelEnable(int)));
+  QObject::connect(pushButton_ledcolor, SIGNAL(clicked()), 
+      this, SLOT(colorButtonPressed()));
 
   /* Connect external signals to this widget */
   QObject::connect(asyncrobot_, SIGNAL(accelChanged(double, double, double)),
       this, SLOT(setAccelSliders(double, double, double)));
+  setEnabled(false);
 }
 
 void AuxControlPanelForm::beepPressed()
@@ -49,6 +53,21 @@ void AuxControlPanelForm::buzzerTextChanged(const QString & text)
 {
   horizontalSlider_buzzerFreq->setValue(text.toInt());
   asyncrobot_->setBuzzerFrequency(text.toInt());
+}
+
+void AuxControlPanelForm::colorButtonPressed()
+{
+  static QColorDialog *d = NULL;
+  if(d == NULL) {
+    d = new QColorDialog(this);
+    QObject::connect(d, SIGNAL(currentColorChanged(const QColor &)),
+        asyncrobot_, SLOT(setLEDColor(const QColor &)));
+  }
+  QColor color = asyncrobot_->getLEDColor();
+  d->setCurrentColor(color);
+  d->show();
+  d->raise();
+  d->activateWindow();
 }
 
 void AuxControlPanelForm::handleBuzzerCheckbox(int state)
@@ -100,3 +119,4 @@ void AuxControlPanelForm::setAccelSliders(double x, double y, double z)
   lineEdit_zaccel->setText( QString::number(z) );
   lineEdit_magaccel->setText( QString::number(sqrt(x*x + y*y + z*z)) );
 }
+
