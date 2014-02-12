@@ -62,6 +62,7 @@ ControlPanelForm::ControlPanelForm(AsyncRobot* asyncRobot, QWidget *parent)
   QObject::connect(asyncrobot_, SIGNAL(joint2Changed(double)),
       this, SLOT(setJ2Label(double)));
 
+  /* Connect "Enable" checkbox */
   QObject::connect(this->checkBox_enable, SIGNAL(stateChanged(int)), 
       this, SLOT(enable(int)));
   QObject::connect(this->checkBox_enable, SIGNAL(stateChanged(int)),

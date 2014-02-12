@@ -1,4 +1,5 @@
 #include "asyncrobot.h"
+#include "mainwindow.h"
 #include <QCoreApplication>
 #include <QDebug>
 #include <QThread>
@@ -29,11 +30,21 @@ void AsyncRobot::enableJointSignals(bool enable)
   mobotLock_.unlock();
 }
 
+void AsyncRobot::enableJointSignals(int enable)
+{
+  enableJointSignals(static_cast<bool>(enable));
+}
+
 void AsyncRobot::enableAccelSignals(bool enable)
 {
   mobotLock_.lock();
   accelSignalEnable_ = enable;
   mobotLock_.unlock();
+}
+
+void AsyncRobot::enableAccelSignals(int enable)
+{
+  enableJointSignals(static_cast<bool>(enable));
 }
 
 void AsyncRobot::disableJointSignals()
@@ -192,7 +203,10 @@ void AsyncRobot::doWork()
     mobotLock_.unlock();
     return;
   }
-  if(jointSignalEnable_) {
+  if(
+      jointSignalEnable_ &&
+      (mainWindow()->currentTab() == 0)
+    ) {
     mobot_->getJointAngles( 
         jointAngles[0], 
         jointAngles[1], 
@@ -229,7 +243,10 @@ void AsyncRobot::doWork()
       memcpy(lastJointAngles_, jointAngles, sizeof(double)*3);
     }
   }
-  if(accelSignalEnable_) {
+  if(
+      accelSignalEnable_ &&
+      (mainWindow()->currentTab() == 1)
+      ) {
     mobot_->getAccelerometerData(accel[0], accel[1], accel[2]);
     if(memcmp(accel, lastAccel_, sizeof(double)*3)) {
       emit accelChanged(accel[0], accel[1], accel[2]);

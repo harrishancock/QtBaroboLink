@@ -26,7 +26,9 @@ class AsyncRobot:public QObject
     void doWork(); // Worker thread
     void setState(int state);
     void enableJointSignals(bool enable = true);
+    void enableJointSignals(int enable);
     void enableAccelSignals(bool enable = true);
+    void enableAccelSignals(int enable);
     void disableJointSignals();
     void disableAccelSignals();
     void acquireJointControl();

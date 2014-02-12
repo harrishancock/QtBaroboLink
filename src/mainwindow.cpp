@@ -57,6 +57,11 @@ void MainWindow::init()
     connectSignals();
 }
 
+int MainWindow::currentTab()
+{
+  return ui->tabWidget->currentIndex();
+}
+
 void MainWindow::errorDialog(const QString & msg)
 {
   QMessageBox msgBox;

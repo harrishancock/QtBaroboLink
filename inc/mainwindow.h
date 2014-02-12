@@ -19,6 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void init();
+    int currentTab();
 
 public slots:
     void errorDialog(const QString & msg);
