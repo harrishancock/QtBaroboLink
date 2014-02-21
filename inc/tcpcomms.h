@@ -37,7 +37,7 @@ class CommsForwarding : public QObject
     void newConnection();
 
   private:
-    QTcpServer *server_;
+    QTcpServer server_;
     QList<CommsRobotClient*> clients_;
 };
 

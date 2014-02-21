@@ -83,7 +83,7 @@ set(SOURCES
     src/auxcontrolpanel.cpp
    )
 
-set(HEADERS
+qt5_wrap_cpp(HEADERS
     inc/asyncrobot.h
     inc/connectdialog.h
     inc/controlpanel.h
@@ -96,7 +96,7 @@ set(HEADERS
     inc/auxcontrolpanel.h
    )
 
-set(UIFILES
+qt5_wrap_ui(UIFILES
     connectpanel.ui
     controlpanel.ui
     mainwindow.ui
@@ -105,11 +105,9 @@ set(UIFILES
     auxcontrol.ui
    )
 
-QT5_WRAP_CPP(HEADERS_MOC ${HEADERS})
-QT5_WRAP_UI(UIFILES_MOC ${UIFILES})
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
-add_executable(${TARGET} ${SOURCES} ${HEADERS_MOC} ${UIFILES_MOC} ${RESOURCES})
+add_executable(${TARGET} ${SOURCES} ${HEADERS} ${UIFILES} ${RESOURCES})
 
 # FIXME when it becomes feasible to require CMake >= 2.8.11, remove this crap
 # search on the internet for "CMake policy CMP0020" to read why
@@ -124,9 +122,9 @@ qt5_use_modules(${TARGET} Widgets Network WebKitWidgets)
 install(TARGETS ${TARGET} RUNTIME DESTINATION ${INSTALL_BIN_DIR})
 
 if(APPLE)
-# Qt5 headers won't compile without the following...
-set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "-mmacosx-version-min=10.7 -stdlib=libc++")
-set_target_properties(${TARGET} PROPERTIES LINK_FLAGS "-mmacosx-version-min=10.7 -stdlib=libc++")
+  # Qt5 headers won't compile without the following...
+  set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS "-mmacosx-version-min=10.7 -stdlib=libc++")
+  set_target_properties(${TARGET} PROPERTIES LINK_FLAGS "-mmacosx-version-min=10.7 -stdlib=libc++")
 endif()
 
 # Include required libraries at install-time. This is the Windows way.
@@ -176,6 +174,9 @@ if(WIN32)
   # Long-term fix: write my own FindMSVC.cmake module and programmatically set
   # gp_cmd_paths from its output.
   # Longer-term fix: fix GetPrerequisites.cmake. This is ridiculous.
+  #
+  # NOTE: You will probably need to add "<path to VS>/Common7/IDE" to your
+  # path, otherwise link.exe will fail with a missing DLL.
   install(CODE "
     include(BundleUtilities)
     set(gp_cmd_paths \${gp_cmd_paths}
