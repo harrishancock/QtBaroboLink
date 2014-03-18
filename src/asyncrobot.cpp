@@ -60,8 +60,8 @@ void AsyncRobot::doWork()
   double accel[3];
   mobotLock_.lock();
   if(
-      (mobot_ == NULL) ||
-      (!mobot_->isConnected())
+      (mobot_ == NULL)/* ||
+      (!mobot_->isConnected()) */
     ) {
     mobotLock_.unlock();
     return;
