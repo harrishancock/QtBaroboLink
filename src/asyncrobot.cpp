@@ -12,6 +12,7 @@ AsyncRobot::AsyncRobot()
   buzzerState_ = false;
   buzzerFreq_ = 440;
   timer_ = new QTimer(this);
+  jointControl_ = false;
 }
 
 AsyncRobot::~AsyncRobot() {}
