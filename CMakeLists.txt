@@ -7,6 +7,14 @@ cmake_policy(VERSION 2.8.9)
 
 project(QtBaroboLink)
 
+set(VERSION_MAJOR 2)
+set(VERSION_MINOR 0)
+set(VERSION_PATCH 0)
+set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
+
+##############################################################################
+# Setup
+
 # Since this is an executable project, we want all shared libraries generated
 # by subprojects to be deposited in our own binary directory. This allows us
 # to run our executable immediately after compilation, without copying
@@ -18,12 +26,11 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 # also be deposited in our binary directory.
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
+set(required_libbarobo_version 0.1.0)
 add_subdirectory(../libbarobo libbarobo)
-
-set(VERSION_MAJOR 2)
-set(VERSION_MINOR 0)
-set(VERSION_ALPHA 0)
-set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR})
+if(NOT LIBBAROBO_VERSION VERSION_EQUAL ${required_libbarobo_version})
+  message(FATAL_ERROR "QtBaroboLink requires libbarobo version ${required_libbarobo_version}")
+endif()
 
 set(CMAKE_MODULE_PATH 
     ${CMAKE_MODULE_PATH}
@@ -51,7 +58,6 @@ message(STATUS "${PROJECT_NAME} will install data to ${CMAKE_INSTALL_PREFIX}/${I
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
-find_package(LIBBAROBO)
 include_directories(${LIBBAROBO_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/inc ${PROJECT_BINARY_DIR})
 
 # Using gnu++11 instead of c++11 to workaround off64_t issue in late versions
@@ -195,14 +201,14 @@ set(CPACK_PACKAGE_VENDOR "Barobo, inc.")
 #set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/Copyright.txt")
 set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
-#set(CPACK_PACKAGE_VERSION_PATCH "2")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "BaroboLink ${VERSION_MAJOR}.${VERSION_MINOR}.alpha${VERSION_ALPHA}")
+set(CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH})
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "BaroboLink ${VERSION}")
 if(WIN32 AND NOT UNIX)
   # There is a bug in NSI that does not handle full unix paths properly. Make
   # sure there is at least one set of four (4) backlasshes.
   #set(CPACK_PACKAGE_ICON "${CMake_SOURCE_DIR}/Utilities/Release\\\\InstallIcon.bmp")
   #set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\MyExecutable.exe")
-  set(CPACK_NSIS_DISPLAY_NAME "BaroboLink ${VERSION_MAJOR}.${VERSION_MINOR}.alpha${VERSION_ALPHA}")
+  set(CPACK_NSIS_DISPLAY_NAME "BaroboLink ${VERSION}")
   set(CPACK_NSIS_HELP_LINK "http://www.barobo.com")
   set(CPACK_NSIS_URL_INFO_ABOUT "http://www.barobo.com")
   set(CPACK_NSIS_CONTACT "david@barobo.com")
